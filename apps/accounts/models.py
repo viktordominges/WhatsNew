@@ -1,3 +1,5 @@
+# C:\Users\admin\Desktop\WhatsNew\apps\accounts\models.py
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -5,14 +7,13 @@ from django.db import models
 class User(AbstractUser):
     """Кастомная модель пользователя"""
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=30, blank=True)
+    username = models.CharField(max_length=30, blank=False, null=False, unique=False)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username'] #Проверить нужно ли это в коде
 
     class Meta:
         db_table = 'users'
@@ -24,5 +25,5 @@ class User(AbstractUser):
 
     @property
     def full_name(self):
-        return f"{self.first_name} {self.last_name}".strip()
+        return f"{self.username}".strip() if self.username else self.email
 
