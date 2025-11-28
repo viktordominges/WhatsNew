@@ -12,7 +12,7 @@ class UserAdmin(BaseUserAdmin):
     
     fieldsets = (
         (None, {'fields': ('email', 'username', 'password')}),
-        ('Personal Info', {'fields': ('avatar')}),
+        ('Personal Info', {'fields': ('avatar',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined', 'created_at', 'updated_at')}),
     )
@@ -24,5 +24,5 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'date_joined', 'last_login')
 
