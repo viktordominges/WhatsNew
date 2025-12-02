@@ -1,0 +1,49 @@
+
+# Опционально: модель для отзывов об организаторах
+class OrganizerReview(models.Model):
+    """
+    Модель отзывов и рейтингов организаторов.
+    """
+    organizer = models.ForeignKey(
+        Organizer,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='organizer_reviews'
+    )
+    rating = models.PositiveSmallIntegerField(
+        choices=[(i, i) for i in range(1, 6)],
+        help_text='Rating from 1 to 5'
+    )
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'organizer_reviews'
+        verbose_name = 'Organizer Review'
+        verbose_name_plural = 'Organizer Reviews'
+        ordering = ['-created_at']
+        unique_together = ['organizer', 'user']  # Один отзыв от пользователя
+        indexes = [
+            models.Index(fields=['organizer', '-created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.organizer.name} ({self.rating}★)"
+
+
+
+
+@property
+    def average_rating(self):
+        """Средний рейтинг организатора (если есть отзывы)"""
+        # Предполагая что у вас будет модель OrganizerReview
+        if hasattr(self, 'reviews'):
+            return self.reviews.aggregate(
+                avg_rating=Avg('rating')
+            )['avg_rating']
+        return None
