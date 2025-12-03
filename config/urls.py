@@ -57,16 +57,8 @@ ACTIVITIES:
 - PATCH  /api/v1/activities/{slug}/update-address/      - Update activity address
 - GET    /api/v1/activities/{slug}/comments/            - Get activity comments
 - POST   /api/v1/activities/{slug}/add-comment/         - Add comment
-- GET    /api/v1/activities/{slug}/photos/              - Get activity photos
-- POST   /api/v1/activities/{slug}/add-photo/           - Add photo
-
 
 NESTED ROUTES (если используете drf-nested-routers):
-- GET    /api/v1/activities/{slug}/photos/              - List photos
-- POST   /api/v1/activities/{slug}/photos/              - Create photo
-- GET    /api/v1/activities/{slug}/photos/{id}/         - Get photo
-- PUT    /api/v1/activities/{slug}/photos/{id}/         - Update photo
-- DELETE /api/v1/activities/{slug}/photos/{id}/         - Delete photo
 
 - GET    /api/v1/activities/{slug}/comments/            - List comments
 - POST   /api/v1/activities/{slug}/comments/            - Create comment

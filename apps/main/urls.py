@@ -6,7 +6,6 @@ from .views import (
     CategoryViewSet,
     OrganizerViewSet,
     ActivityViewSet,
-    ActivityPhotoViewSet,
     CommentViewSet,
 )
 
@@ -21,30 +20,6 @@ app_name = 'main'
 urlpatterns = [
     # Include main router
     path('', include(router.urls)),
-    
-    # ========================================================================
-    # NESTED ROUTES - Activity Photos
-    # ========================================================================
-    # List/Create photos for activity
-    path(
-        'activities/<slug:activity_slug>/photos/',
-        ActivityPhotoViewSet.as_view({
-            'get': 'list',
-            'post': 'create'
-        }),
-        name='activity-photos-list'
-    ),
-    # Retrieve/Update/Delete specific photo
-    path(
-        'activities/<slug:activity_slug>/photos/<int:pk>/',
-        ActivityPhotoViewSet.as_view({
-            'get': 'retrieve',
-            'put': 'update',
-            'patch': 'partial_update',
-            'delete': 'destroy'
-        }),
-        name='activity-photos-detail'
-    ),
     
     # ========================================================================
     # NESTED ROUTES - Activity Comments

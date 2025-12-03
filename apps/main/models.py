@@ -220,59 +220,6 @@ class Activity(models.Model):
         Activity.objects.filter(pk=self.pk).update(views_count=F('views_count') + 1)
 
 
-class ActivityPhoto(models.Model):
-    """Additional photos for activity"""
-    activity = models.ForeignKey(
-        Activity,
-        on_delete=models.CASCADE,
-        related_name='photos'
-    )
-    image = models.ImageField(upload_to='activities/photos/')
-    caption = models.CharField(max_length=200, blank=True)
-    order = models.PositiveIntegerField(default=0)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'activity_photos'
-        verbose_name = 'Activity Photo'
-        verbose_name_plural = 'Activity Photos'
-        ordering = ['order', 'uploaded_at']
-
-    def __str__(self):
-        return f"Photo for {self.activity.name}"
-    
-    
-class Comment(models.Model):
-    """Comments for activities"""
-    activity = models.ForeignKey(
-        Activity,
-        on_delete=models.CASCADE,
-        related_name='comments'
-    )
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='activity_comments'
-    )
-    text = models.TextField(max_length=1000)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        db_table = 'activity_comments'
-        verbose_name = 'Comment'
-        verbose_name_plural = 'Comments'
-        ordering = ['-created_at']
-        indexes = [
-            models.Index(fields=['activity', '-created_at']),
-            models.Index(fields=['is_active']),
-        ]
-    
-    def __str__(self):
-        return f"Comment by {self.author.username} on {self.activity.name}"
-    
-    
 class ActivityAddress(gis_models.Model):
     """
     Single address and location for activity.
@@ -365,3 +312,34 @@ class ActivityAddress(gis_models.Model):
             raise ValueError('Latitude must be between -90 and 90')
         
         self.location = Point(longitude, latitude, srid=4326)
+    
+
+class Comment(models.Model):
+    """Comments for activities"""
+    activity = models.ForeignKey(
+        Activity,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='activity_comments'
+    )
+    text = models.TextField(max_length=1000)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'activity_comments'
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['activity', '-created_at']),
+            models.Index(fields=['is_active']),
+        ]
+    
+    def __str__(self):
+        return f"Comment by {self.author.username} on {self.activity.name}"

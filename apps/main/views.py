@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch, Q
 from django.utils import timezone
 
-from .models import Category, Organizer, Activity, ActivityPhoto, Comment, ActivityAddress
+from .models import Category, Organizer, Activity, Comment
 from .serializers import (
     CategorySerializer,
     OrganizerSerializer,
@@ -19,7 +19,6 @@ from .serializers import (
     ActivityDetailSerializer,
     ActivityCreateSerializer,
     ActivityUpdateSerializer,
-    ActivityPhotoSerializer,
     CommentSerializer,
     CommentCreateSerializer,
     ActivityAddressSerializer,
@@ -338,47 +337,6 @@ class ActivityViewSet(viewsets.ModelViewSet):
         serializer.save(activity=activity)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-# ============================================================================
-# ACTIVITY PHOTO VIEWSET
-# ============================================================================
-
-class ActivityPhotoViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for activity photos.
-    Nested under activities.
-    """
-    serializer_class = ActivityPhotoSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsActivityAuthor]
-    
-    def get_queryset(self):
-        """Get photos for specific activity"""
-        activity_slug = self.kwargs.get('activity_slug')
-        return ActivityPhoto.objects.filter(
-            activity__slug=activity_slug
-        ).select_related('activity')
-    
-    def perform_create(self, serializer):
-        """Create photo for specific activity"""
-        activity_slug = self.kwargs.get('activity_slug')
-        activity = get_object_or_404(Activity, slug=activity_slug)
-        
-        # Verify user is the activity author
-        if activity.author != self.request.user:
-            raise PermissionDenied("You can only add photos to your own activities.")
-        
-        serializer.save(activity=activity)
-    
-    def perform_update(self, serializer):
-        """Update photo"""
-        # Permission already checked by IsActivityAuthor
-        serializer.save()
-    
-    def perform_destroy(self, instance):
-        """Delete photo"""
-        # Permission already checked by IsActivityAuthor
-        instance.delete()
 
 
 # ============================================================================

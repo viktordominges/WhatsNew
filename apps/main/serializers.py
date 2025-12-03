@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from django.utils import timezone
-from .models import Category, Organizer, Activity, ActivityPhoto, Comment, ActivityAddress
+from .models import Category, Organizer, Activity, Comment, ActivityAddress
 
 
 # ============================================================================
@@ -161,19 +161,6 @@ class ActivityAddressWriteSerializer(serializers.ModelSerializer):
 
 
 # ============================================================================
-# ACTIVITY PHOTO SERIALIZERS
-# ============================================================================
-
-class ActivityPhotoSerializer(serializers.ModelSerializer):
-    """Photo serializer"""
-    
-    class Meta:
-        model = ActivityPhoto
-        fields = ['id', 'image', 'caption', 'order', 'uploaded_at']
-        read_only_fields = ['id', 'uploaded_at']
-
-
-# ============================================================================
 # COMMENT SERIALIZERS
 # ============================================================================
 
@@ -240,12 +227,10 @@ class ActivityDetailSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     author = UserSerializer(read_only=True)
     address = ActivityAddressSerializer(read_only=True)
-    photos = ActivityPhotoSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     is_free = serializers.BooleanField(read_only=True)
     is_upcoming = serializers.BooleanField(read_only=True)
     comments_count = serializers.SerializerMethodField()
-    photos_count = serializers.SerializerMethodField()
     
     class Meta:
         model = Activity
@@ -253,10 +238,10 @@ class ActivityDetailSerializer(serializers.ModelSerializer):
             'id', 'name', 'slug', 'date', 'time',
             'summary', 'description', 'poster', 'price', 'website',
             'organizer', 'category', 'author',
-            'address', 'photos', 'comments',
+            'address', 'comments',
             'status', 'views_count',
             'is_free', 'is_upcoming',
-            'comments_count', 'photos_count',
+            'comments_count',
             'created_at', 'updated_at'
         ]
         read_only_fields = [
@@ -267,10 +252,6 @@ class ActivityDetailSerializer(serializers.ModelSerializer):
     def get_comments_count(self, obj):
         """Get active comments count"""
         return obj.comments.filter(is_active=True).count()
-    
-    def get_photos_count(self, obj):
-        """Get photos count"""
-        return obj.photos.count()
 
 
 class ActivityCreateSerializer(serializers.ModelSerializer):
