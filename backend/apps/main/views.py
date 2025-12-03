@@ -24,7 +24,7 @@ from .serializers import (
     ActivityAddressSerializer,
     ActivityAddressWriteSerializer,
 )
-from .permissions import IsAuthorOrReadOnly, IsAdminOrReadOnly, IsActivityAuthor
+from .permissions import IsAuthorOrReadOnly, IsAdminOrReadOnly
 
 
 # ============================================================================
@@ -52,12 +52,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def activities(self, request, slug=None):
-        """Get all activities for this category"""
         category = self.get_object()
         activities = category.activities.filter(
             status='published',
             date__gte=timezone.now().date()
-        ).select_related('organizer', 'category')
+        ).select_related('organizer', 'category', 'author')  # Добавить
         
         serializer = ActivityListSerializer(activities, many=True)
         return Response(serializer.data)
@@ -150,7 +149,6 @@ class ActivityViewSet(viewsets.ModelViewSet):
         # Optimize prefetch based on action
         if self.action == 'retrieve':
             queryset = queryset.prefetch_related(
-                'photos',
                 Prefetch(
                     'comments',
                     queryset=Comment.objects.filter(is_active=True).select_related('author')
@@ -231,10 +229,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
     def address_update(self, request, slug=None):
         """Create or update activity address"""
         activity = self.get_object()
-        
-        # Check permissions
-        self.check_object_permissions(request, activity)
-        
+
         # Check if address exists
         if hasattr(activity, 'address'):
             # Update existing address
@@ -311,32 +306,6 @@ class ActivityViewSet(viewsets.ModelViewSet):
             CommentSerializer(serializer.instance).data,
             status=status.HTTP_201_CREATED
         )
-    
-    @action(detail=True, methods=['get'])
-    def photos(self, request, slug=None):
-        """Get all photos for activity"""
-        activity = self.get_object()
-        photos = activity.photos.all()
-        serializer = ActivityPhotoSerializer(photos, many=True)
-        return Response(serializer.data)
-    
-    @action(
-        detail=True,
-        methods=['post'],
-        permission_classes=[IsAuthenticated, IsAuthorOrReadOnly]
-    )
-    def add_photo(self, request, slug=None):
-        """Add photo to activity"""
-        activity = self.get_object()
-        
-        # Check permissions
-        self.check_object_permissions(request, activity)
-        
-        serializer = ActivityPhotoSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(activity=activity)
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # ============================================================================

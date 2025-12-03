@@ -304,15 +304,11 @@ class ActivityCreateSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        """Create activity with address"""
         address_data = validated_data.pop('address', None)
-        
-        # Set author from request
         validated_data['author'] = self.context['request'].user
         
         activity = Activity.objects.create(**validated_data)
         
-        # Create address if provided
         if address_data:
             longitude = address_data.pop('longitude', None)
             latitude = address_data.pop('latitude', None)
@@ -322,10 +318,15 @@ class ActivityCreateSerializer(serializers.ModelSerializer):
                 **address_data
             )
             
+            # Проверка и установка координат
             if longitude is not None and latitude is not None:
-                address.set_coordinates(longitude, latitude)
-                address.save()
-        
+                try:
+                    address.set_coordinates(longitude, latitude)
+                    address.save()
+                except ValueError as e:
+                    # Откатываем создание activity
+                    activity.delete()
+                    raise serializers.ValidationError({'coordinates': str(e)})
         return activity
 
 
