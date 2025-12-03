@@ -1,3 +1,5 @@
+# apps/main/models.py
+
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
 
