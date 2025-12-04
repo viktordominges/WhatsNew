@@ -7,7 +7,7 @@ from django.db import models
 class User(AbstractUser):
     """Кастомная модель пользователя"""
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=30, blank=False, null=False, unique=False)
+    username = models.CharField(max_length=30, blank=True, null=False, unique=False)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

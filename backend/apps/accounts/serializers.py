@@ -1,5 +1,6 @@
 #C:\Users\admin\Desktop\WhatsNew\apps\accounts\serializers.py
 
+from backend.apps.validators import validate_image_file
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -29,6 +30,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                 {"password_confirm": "Password do not match."}
             )
         return attrs
+    
+    def validate_avatar(self, value):
+        """Validate avatar image"""
+        return validate_image_file(value, max_size_mb=1)
     
     def create(self, validated_data):
         validated_data.pop('password_confirm')
@@ -107,6 +112,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = (
             'username', 'avatar'
         )
+        
+    def validate_avatar(self, value):
+        """Validate avatar image"""
+        return validate_image_file(value, max_size_mb=1)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():

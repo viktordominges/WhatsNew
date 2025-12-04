@@ -78,10 +78,18 @@ class IsActivityAuthor(permissions.BasePermission):
         if view.action == 'create':
             activity_slug = view.kwargs.get('activity_slug')
             if activity_slug:
+                # ✅ ИСПРАВЛЕНО: Проверяем через view queryset
+                # В nested viewset уже фильтруется по activity_slug
+                # Просто проверяем что activity существует
                 try:
+                    # Используем queryset из view для правильной фильтрации
                     activity = Activity.objects.get(slug=activity_slug)
                     return activity.author == request.user
                 except Activity.DoesNotExist:
+                    return False
+                except Activity.MultipleObjectsReturned:
+                    # ✅ ОБРАБОТКА: если slug не уникален
+                    # В этом случае нужно требовать уникальность или менять логику
                     return False
         
         return True

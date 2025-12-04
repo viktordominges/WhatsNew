@@ -22,8 +22,30 @@ class ActivityAddressInline(admin.StackedInline):
     ]
     
     def has_delete_permission(self, request, obj=None):
-        """Allow deletion of address"""
-        return True
+        """Allow deletion only for staff/superusers"""
+        return request.user.is_staff or request.user.is_superuser
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow changes only for staff/superusers or activity author"""
+        if request.user.is_staff or request.user.is_superuser:
+            return True
+        
+        # Check if user is activity author
+        if obj and hasattr(obj, 'activity'):
+            return obj.activity.author == request.user
+        
+        return False
+    
+    def has_add_permission(self, request, obj=None):
+        """Allow adding only for staff/superusers or when creating activity"""
+        if request.user.is_staff or request.user.is_superuser:
+            return True
+        
+        # Allow when creating new activity
+        if obj is None:
+            return True
+        
+        return False
 
 
 class CommentInline(admin.TabularInline):
@@ -32,11 +54,18 @@ class CommentInline(admin.TabularInline):
     extra = 0
     fields = ['author', 'text', 'is_active', 'created_at']
     readonly_fields = ['author', 'created_at']
-    can_delete = False
+    
+    def has_delete_permission(self, request, obj=None):
+        """Disable deletion - use soft delete (is_active) instead"""
+        return False
     
     def has_add_permission(self, request, obj=None):
         """Disable adding comments from inline"""
         return False
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow only toggling is_active for staff"""
+        return request.user.is_staff or request.user.is_superuser
 
 
 # ============================================================================

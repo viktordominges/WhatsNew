@@ -87,7 +87,6 @@ class Organizer(models.Model):
     def get_absolute_url(self):
         return reverse('organizer-detail', kwargs={'slug': self.slug})
 
-
 class Activity(models.Model):
     """Activity/Event model"""
     
@@ -98,7 +97,7 @@ class Activity(models.Model):
     
     # Basic info
     name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, blank=True)
+    slug = models.SlugField(max_length=200, blank=True, unique=True)
     date = models.DateField()
     time = models.TimeField()
     summary = models.CharField(max_length=300)
@@ -152,13 +151,6 @@ class Activity(models.Model):
         verbose_name_plural = 'Activities'
         ordering = ['-date', '-created_at']
         
-        constraints = [
-            models.UniqueConstraint(
-                fields=['slug', 'organizer'],
-                name='unique_activity_slug_per_organizer'
-            )
-        ]
-        
         indexes = [
             models.Index(fields=['-date', '-created_at']),
             models.Index(fields=['status', '-date']),
@@ -186,6 +178,13 @@ class Activity(models.Model):
             })
 
     def save(self, *args, **kwargs):
+        """Save with slug generation and validation"""
+        # ✅ ДОБАВЛЕНО: Вызываем валидацию перед сохранением
+        # Пропускаем валидацию только при миграциях/фикстурах
+        if not kwargs.pop('skip_validation', False):
+            self.full_clean()
+        
+        # Generate slug if not exists
         if not self.slug:
             base_slug = slugify(unidecode(self.name))
             slug = base_slug
@@ -216,8 +215,9 @@ class Activity(models.Model):
         return self.date >= timezone.now().date()
 
     def increment_views(self):
-        """Increment views count (thread-safe)"""
         Activity.objects.filter(pk=self.pk).update(views_count=F('views_count') + 1)
+        self.refresh_from_db(fields=['views_count'])
+
 
 
 class ActivityAddress(gis_models.Model):
@@ -278,6 +278,13 @@ class ActivityAddress(gis_models.Model):
                 'Either address or location coordinates must be provided.'
             )
     
+    # ✅ ДОБАВЛЕНО: Вызываем валидацию перед сохранением
+    def save(self, *args, **kwargs):
+        """Save with validation"""
+        if not kwargs.pop('skip_validation', False):
+            self.full_clean()
+        super().save(*args, **kwargs)
+    
     @property
     def latitude(self):
         """Get latitude from PointField"""
@@ -312,8 +319,8 @@ class ActivityAddress(gis_models.Model):
             raise ValueError('Latitude must be between -90 and 90')
         
         self.location = Point(longitude, latitude, srid=4326)
-    
-
+        
+        
 class Comment(models.Model):
     """Comments for activities"""
     activity = models.ForeignKey(

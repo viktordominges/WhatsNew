@@ -1,7 +1,9 @@
 # apps/main/serializers.py
 
+from backend.apps.validators import validate_image_file
 from rest_framework import serializers
 from django.utils import timezone
+from django.db import transaction
 from .models import Category, Organizer, Activity, Comment, ActivityAddress
 
 
@@ -28,6 +30,10 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'slug', 'image', 'activities_count']
         read_only_fields = ['id', 'slug', 'activities_count']
+        
+    def validate_image(self, value):
+        """Validate image file"""
+        return validate_image_file(value, max_size_mb=1)
     
     def get_activities_count(self, obj):
         """Get count of published activities in this category"""
@@ -278,6 +284,10 @@ class ActivityCreateSerializer(serializers.ModelSerializer):
             'organizer_id', 'category_id', 'status',
             'address'
         ]
+        
+    def validate_poster(self, value):
+        """Validate poster image"""
+        return validate_image_file(value, max_size_mb=5)
     
     def validate_date(self, value):
         """Check that date is not in the past"""
@@ -307,26 +317,22 @@ class ActivityCreateSerializer(serializers.ModelSerializer):
         address_data = validated_data.pop('address', None)
         validated_data['author'] = self.context['request'].user
         
-        activity = Activity.objects.create(**validated_data)
-        
-        if address_data:
-            longitude = address_data.pop('longitude', None)
-            latitude = address_data.pop('latitude', None)
+        with transaction.atomic():
+            activity = Activity.objects.create(**validated_data)
             
-            address = ActivityAddress.objects.create(
-                activity=activity,
-                **address_data
-            )
-            
-            # Проверка и установка координат
-            if longitude is not None and latitude is not None:
-                try:
+            if address_data:
+                longitude = address_data.pop('longitude', None)
+                latitude = address_data.pop('latitude', None)
+                
+                address = ActivityAddress.objects.create(
+                    activity=activity,
+                    **address_data
+                )
+                
+                if longitude is not None and latitude is not None:
                     address.set_coordinates(longitude, latitude)
                     address.save()
-                except ValueError as e:
-                    # Откатываем создание activity
-                    activity.delete()
-                    raise serializers.ValidationError({'coordinates': str(e)})
+        
         return activity
 
 
@@ -353,6 +359,10 @@ class ActivityUpdateSerializer(serializers.ModelSerializer):
             'poster', 'price', 'website',
             'organizer_id', 'category_id', 'status'
         ]
+        
+    def validate_poster(self, value):
+        """Validate poster image"""
+        return validate_image_file(value, max_size_mb=5)
     
     def validate_date(self, value):
         """Check that date is not in the past"""

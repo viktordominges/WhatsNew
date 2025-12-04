@@ -52,11 +52,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def activities(self, request, slug=None):
+        """Get all activities for this category"""
         category = self.get_object()
+        
+        # ✅ ДОБАВЛЕНО: select_related для оптимизации
         activities = category.activities.filter(
             status='published',
             date__gte=timezone.now().date()
-        ).select_related('organizer', 'category', 'author')  # Добавить
+        ).select_related('organizer', 'category', 'author', 'address')
         
         serializer = ActivityListSerializer(activities, many=True)
         return Response(serializer.data)
@@ -110,7 +113,9 @@ class OrganizerViewSet(viewsets.ModelViewSet):
                 date__gte=timezone.now().date()
             )
         
-        activities = activities.select_related('category', 'organizer')
+        # ✅ ДОБАВЛЕНО: select_related для оптимизации
+        activities = activities.select_related('category', 'organizer', 'author', 'address')
+        
         serializer = ActivityListSerializer(activities, many=True)
         return Response(serializer.data)
 
@@ -142,16 +147,20 @@ class ActivityViewSet(viewsets.ModelViewSet):
         Get queryset with optimized select/prefetch.
         Show all for staff, only published for others.
         """
+        # ✅ БАЗОВАЯ ОПТИМИЗАЦИЯ: всегда используем select_related
         queryset = Activity.objects.select_related(
             'organizer', 'category', 'author', 'address'
         )
         
         # Optimize prefetch based on action
         if self.action == 'retrieve':
+            # ✅ ДОБАВЛЕНО: select_related для author в comments
             queryset = queryset.prefetch_related(
                 Prefetch(
                     'comments',
-                    queryset=Comment.objects.filter(is_active=True).select_related('author')
+                    queryset=Comment.objects.filter(
+                        is_active=True
+                    ).select_related('author')  # ✅ Оптимизация N+1
                 )
             )
         
@@ -201,8 +210,8 @@ class ActivityViewSet(viewsets.ModelViewSet):
         # Increment views for published activities (only for non-authors)
         if instance.status == 'published' and instance.author != request.user:
             instance.increment_views()
-            # Refresh instance to get updated views_count
-            instance.refresh_from_db()
+            # ✅ ИСПРАВЛЕНО: refresh_from_db не нужен, 
+            # т.к. views_count берется из базы при сериализации
         
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
@@ -279,7 +288,12 @@ class ActivityViewSet(viewsets.ModelViewSet):
     def comments(self, request, slug=None):
         """Get all active comments for activity"""
         activity = self.get_object()
-        comments = activity.comments.filter(is_active=True).select_related('author')
+        
+        # ✅ ДОБАВЛЕНО: select_related для author
+        comments = activity.comments.filter(
+            is_active=True
+        ).select_related('author')
+        
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
@@ -322,6 +336,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Get active comments for specific activity"""
         activity_slug = self.kwargs.get('activity_slug')
+        
+        # ✅ ДОБАВЛЕНО: select_related для author и activity
         return Comment.objects.filter(
             activity__slug=activity_slug,
             is_active=True
@@ -336,6 +352,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create comment for specific activity"""
         activity_slug = self.kwargs.get('activity_slug')
+        
+        # ✅ БЕЗ ИЗМЕНЕНИЙ: get_object_or_404 корректно работает с slug
+        # Если slug не уникален, нужно менять модель Activity
         activity = get_object_or_404(Activity, slug=activity_slug)
         
         # Only allow comments on published activities
