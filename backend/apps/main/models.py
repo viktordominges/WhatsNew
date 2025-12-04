@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db.models import F
 from unidecode import unidecode
-
+ 
 
 class Category(models.Model):
     """Category for activities"""

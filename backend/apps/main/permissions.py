@@ -57,7 +57,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         
         # Write permissions only for staff/admin
         return request.user and request.user.is_staff
-
+ 
 
 class IsActivityAuthor(permissions.BasePermission):
     """

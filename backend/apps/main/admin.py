@@ -251,7 +251,7 @@ class ActivityAddressAdmin(GISModelAdmin):
             'classes': ['collapse']
         })
     ]
-    
+     
     # GIS settings
     default_lon = 4.3517  # Brussels longitude
     default_lat = 50.8503  # Brussels latitude
