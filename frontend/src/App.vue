@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router';
 import FirstMenu from './components/header/FirstMenu.vue';
 import HeaderBar from './components/header/HeaderBar.vue';
+import SecondMenu from './components/header/SecondMenu.vue';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -11,6 +12,8 @@ import HelloWorld from './components/HelloWorld.vue'
 		<FirstMenu />
 		
 		<HeaderBar />
+
+        <SecondMenu />
 
 		<div class="container">
 		

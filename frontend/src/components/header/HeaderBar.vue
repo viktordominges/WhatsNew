@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import SearchBar from './SearchBar.vue'
+import userIcon from '@/assets/icons/user-icon.svg';
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import SearchBar from './SearchBar.vue'
                 <nav>
                     <RouterLink class="btn blue-transparent-btn" to="/add-activity">Ajouter un événement</RouterLink>
                     <RouterLink class="btn orange-btn" to="/login">
+                        <img :src="userIcon" alt="User Icon">
                         Entrée
                     </RouterLink>
                 </nav>
@@ -44,7 +46,7 @@ import SearchBar from './SearchBar.vue'
     }
 
     .logo {
-        font-size: 48px;
+        font-size: 38px;
         font-weight: 700;
         color: var(--color-light-text);
         text-transform: uppercase;
@@ -53,6 +55,12 @@ import SearchBar from './SearchBar.vue'
     nav {
         display: flex;
         gap: 20px;
+    }
+
+    nav .btn img {
+        width: 15px;
+        height: 15px;
+        margin-right: 3px;
     }
 
     

@@ -13,6 +13,7 @@
 
     --color-second-footer-background: #1FE2F5;
 
+    --color-black: #000000;
     --color-white: #FFFFFF;
     --color-orange: #FF3305;
     --color-blue: #45BCE7;
@@ -53,6 +54,10 @@ a {
     text-decoration: none;
     line-height: 1;
     transition: all 0.3s ease-in-out;
+}
+
+li {
+    list-style: none;
 }
 
 body {
@@ -106,7 +111,7 @@ body {
     padding: 10px;
     border-radius: 5px;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
     cursor: pointer;
     text-transform: uppercase;
