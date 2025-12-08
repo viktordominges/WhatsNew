@@ -1,5 +1,15 @@
 <script setup>
-// import { RouterLink } from 'vue-router'
+
+import { useEventsFilterStore } from '@/stores/eventsFilterStore';
+import { useHeaderStore } from '@/stores/headerStore';
+
+const filterStore = useEventsFilterStore();
+const headerStore = useHeaderStore();
+
+const selectCategory = (name) => {
+    filterStore.setCategory(name);
+    headerStore.setCategory(name);
+};
 
 const icons = import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' });
 const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
@@ -17,29 +27,29 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
                 <a href="#">Calendrier</a>
             </div>
             <ul class="categories-list">
-                <li>
-                    <img :src="getIcon('concert')" alt="Music Icon">
-                    <a href="#">Concerts</a>
+                <li @click="selectCategory('Concerts')">
+                    <img :src="getIcon('concert')" />
+                    <a>Concerts</a>
                 </li>
-                <li>
+                <li @click="selectCategory('Festivals')">
                     <img :src="getIcon('fest')" alt="Festival Icon">
-                    <a href="#">Festivals</a>
+                    <a>Festivals</a>
                 </li>
-                <li>
+                <li @click="selectCategory('Enfants')">
                     <img :src="getIcon('teddy')" alt="Children Icon">
-                    <a href="#">Enfants</a>
+                    <a>Enfants</a>
                 </li>
-                <li>
+                <li @click="selectCategory('Théatre')">
                     <img :src="getIcon('theatre')" alt="Theater Icon">
-                    <a href="#">Théâtre</a>
+                    <a>Théâtre</a>
                 </li>
-                <li>
+                <li @click="selectCategory('Expositions')">
                     <img :src="getIcon('expo')" alt="Exposition Icon">
-                    <a href="#">Expositions</a>
+                    <a>Expositions</a>
                 </li>
-                <li>
+                <li @click="selectCategory('Cinéma')">
                     <img :src="getIcon('cinema')" alt="Cinema Icon">
-                    <a href="#">cinéma</a>
+                    <a>cinéma</a>
                 </li>
             </ul>
             <div class="dots">

@@ -1,36 +1,29 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import FirstMenu from './components/header/FirstMenu.vue';
-import HeaderBar from './components/header/HeaderBar.vue';
-import SecondMenu from './components/header/SecondMenu.vue';
-import HelloWorld from './components/HelloWorld.vue'
+import { Header } from '@/components/header';
+import { FirstFooter, SecondFooter, ThirdFooter } from '@/components/footer';
+
 </script>
 
 <template>
 	<header>
 		
-		<FirstMenu />
-		
-		<HeaderBar />
+		<Header />
 
-        <SecondMenu />
-
-		<div class="container">
-		
-
-		
-		</div>
 	</header>
 	<main>
 		<div class="container">
-			<HelloWorld msg="You did it!" />
+			
 			<RouterView />
+
 		</div>
 	</main>
 	<footer>
-		<div class="container">
-			<p>© 2024 Your Company. All rights reserved.</p>
-		</div>
+
+		<FirstFooter />
+        <SecondFooter />
+        <ThirdFooter />
+
 	</footer>
 
   	
@@ -41,10 +34,7 @@ import HelloWorld from './components/HelloWorld.vue'
 		width: 100%;
 		height: 715px;
 		flex-shrink: 0;
-
-		line-height: 1.5;
 		padding: 30px 0;
-		text-align: center;
 
 		background: url("@/assets/images/header-bg.jpg") center/cover no-repeat;
 	}
@@ -55,11 +45,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
 	footer {
 		flex-shrink: 0;
-		text-align: center;
-		padding: 1rem 0;
-		font-size: 16px;
-		color: white;
-		background-color: black;
+        width: 100%;
 	}
 
 

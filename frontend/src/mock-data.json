@@ -1,0 +1,306 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Concerts",
+            "slug": "concerts",
+            "image": "/images/categories/concerts.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Festivals",
+            "slug": "festivals",
+            "image": "/images/categories/festivals.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Enfants",
+            "slug": "enfants",
+            "image": "/images/categories/enfants.jpg"
+        },
+        {
+            "id": 4,
+            "name": "Théâtre",
+            "slug": "theatre",
+            "image": "/images/categories/theatre.jpg"
+        },
+        {
+            "id": 5,
+            "name": "Expositions",
+            "slug": "expositions",
+            "image": "/images/categories/expositions.jpg"
+        },
+        {
+            "id": 6,
+            "name": "Cinéma",
+            "slug": "cinema",
+            "image": "/images/categories/cinema.jpg"
+        }
+    ],
+    "activities": [
+        {
+            "id": 1,
+            "name": "Soirée Jazz Live",
+            "slug": "soiree-jazz-live",
+            "image": "/images/activities/jazz.jpg",
+            "summary": "Un concert de jazz en live avec des musiciens internationaux dans une ambiance chaleureuse et intimiste.",
+            "date": "2025-01-15",
+            "price": 25,
+            "recommended": true,
+            "category_id": 1
+        },
+        {
+            "id": 2,
+            "name": "Rock Night Festival",
+            "slug": "rock-night-festival",
+            "image": "/images/activities/rock.jpg",
+            "summary": "Une nuit dédiée au rock avec plusieurs groupes locaux et internationaux.",
+            "date": "2025-02-10",
+            "price": 40,
+            "recommended": false,
+            "category_id": 1
+        },
+        {
+            "id": 3,
+            "name": "Acoustic Evening",
+            "slug": "acoustic-evening",
+            "image": "/images/activities/acoustic.jpg",
+            "summary": "Une soirée musicale acoustique dans un cadre détendu et convivial.",
+            "date": "2024-11-05",
+            "price": null,
+            "recommended": false,
+            "category_id": 1
+        },
+        {
+            "id": 4,
+            "name": "Symphonic Orchestra",
+            "slug": "symphonic-orchestra",
+            "image": "/images/activities/orchestra.jpg",
+            "summary": "Un concert exceptionnel avec un orchestre symphonique reconnu internationalement.",
+            "date": "2024-12-20",
+            "price": 55,
+            "recommended": true,
+            "category_id": 1
+        },
+        {
+            "id": 5,
+            "name": "Festival des Lumières",
+            "slug": "festival-des-lumieres",
+            "image": "/images/activities/lumieres.jpg",
+            "summary": "Un festival magique avec des installations lumineuses artistiques dans toute la ville.",
+            "date": "2024-12-08",
+            "price": null,
+            "recommended": true,
+            "category_id": 2
+        },
+        {
+            "id": 6,
+            "name": "Street Food Festival",
+            "slug": "street-food-festival",
+            "image": "/images/activities/food.jpg",
+            "summary": "Dégustez des plats du monde entier dans un festival gourmand et festif.",
+            "date": "2025-03-18",
+            "price": 15,
+            "recommended": false,
+            "category_id": 2
+        },
+        {
+            "id": 7,
+            "name": "Summer Music Fest",
+            "slug": "summer-music-fest",
+            "image": "/images/activities/summer.jpg",
+            "summary": "Un grand festival de musique en plein air avec des artistes populaires.",
+            "date": "2024-08-05",
+            "price": 60,
+            "recommended": true,
+            "category_id": 2
+        },
+        {
+            "id": 8,
+            "name": "Art & Culture Days",
+            "slug": "art-culture-days",
+            "image": "/images/activities/art-culture.jpg",
+            "summary": "Un événement dédié à l’art et à la culture avec expositions et ateliers.",
+            "date": "2025-04-12",
+            "price": null,
+            "recommended": false,
+            "category_id": 2
+        },
+        {
+            "id": 9,
+            "name": "Atelier de Peinture pour Enfants",
+            "slug": "atelier-peinture-enfants",
+            "image": "/images/activities/painting.jpg",
+            "summary": "Un atelier créatif pour enfants avec peinture, bricolage et jeux encadrés.",
+            "date": "2025-01-20",
+            "price": 10,
+            "recommended": true,
+            "category_id": 3
+        },
+        {
+            "id": 10,
+            "name": "Spectacle de Marionnettes",
+            "slug": "spectacle-marionnettes",
+            "image": "/images/activities/marionnettes.jpg",
+            "summary": "Un joli spectacle de marionnettes pour divertir les plus petits.",
+            "date": "2024-10-10",
+            "price": null,
+            "recommended": false,
+            "category_id": 3
+        },
+        {
+            "id": 11,
+            "name": "Chasse au Trésor",
+            "slug": "chasse-au-tresor",
+            "image": "/images/activities/treasure.jpg",
+            "summary": "Un jeu d’aventure amusant pour enfants dans un parc sécurisé.",
+            "date": "2025-05-02",
+            "price": null,
+            "recommended": true,
+            "category_id": 3
+        },
+        {
+            "id": 12,
+            "name": "Mini Disco Party",
+            "slug": "mini-disco-party",
+            "image": "/images/activities/disco.jpg",
+            "summary": "Une fête dansante spécialement conçue pour les enfants avec musique et animations.",
+            "date": "2024-09-15",
+            "price": 8,
+            "recommended": false,
+            "category_id": 3
+        },
+        {
+            "id": 13,
+            "name": "Hamlet – Théâtre Classique",
+            "slug": "hamlet-theatre",
+            "image": "/images/activities/hamlet.jpg",
+            "summary": "Une représentation moderne de la célèbre pièce de Shakespeare.",
+            "date": "2025-02-25",
+            "price": 35,
+            "recommended": true,
+            "category_id": 4
+        },
+        {
+            "id": 14,
+            "name": "Impro Night",
+            "slug": "impro-night",
+            "image": "/images/activities/improm.jpg",
+            "summary": "Une soirée d’improvisation pleine d’humour et de surprises.",
+            "date": "2024-11-18",
+            "price": null,
+            "recommended": false,
+            "category_id": 4
+        },
+        {
+            "id": 15,
+            "name": "Comédie Romantique Live",
+            "slug": "comedie-romantique-live",
+            "image": "/images/activities/romantic.jpg",
+            "summary": "Une pièce légère et amusante sur les relations modernes.",
+            "date": "2025-03-11",
+            "price": 22,
+            "recommended": true,
+            "category_id": 4
+        },
+        {
+            "id": 16,
+            "name": "One Man Show",
+            "slug": "one-man-show",
+            "image": "/images/activities/oneman.jpg",
+            "summary": "Un spectacle d’humour solo avec un artiste local.",
+            "date": "2024-12-03",
+            "price": 18,
+            "recommended": false,
+            "category_id": 4
+        },
+        {
+            "id": 17,
+            "name": "Exposition Art Moderne",
+            "slug": "expo-art-moderne",
+            "image": "/images/activities/modern-art.jpg",
+            "summary": "Une exposition présentant des œuvres contemporaines d’artistes internationaux.",
+            "date": "2025-01-30",
+            "price": null,
+            "recommended": true,
+            "category_id": 5
+        },
+        {
+            "id": 18,
+            "name": "Galerie Photo Urbaine",
+            "slug": "galerie-photo-urbaine",
+            "image": "/images/activities/urban.jpg",
+            "summary": "Une sélection de photographies artistiques sur la vie urbaine.",
+            "date": "2024-10-22",
+            "price": null,
+            "recommended": false,
+            "category_id": 5
+        },
+        {
+            "id": 19,
+            "name": "Expo Histoire Antique",
+            "slug": "expo-histoire-antique",
+            "image": "/images/activities/ancient.jpg",
+            "summary": "Découverte des civilisations anciennes à travers des artefacts rares.",
+            "date": "2025-04-05",
+            "price": 12,
+            "recommended": false,
+            "category_id": 5
+        },
+        {
+            "id": 20,
+            "name": "Immersion Numérique",
+            "slug": "immersion-numerique",
+            "image": "/images/activities/digital.jpg",
+            "summary": "Une expérience interactive avec réalité virtuelle et installations numériques.",
+            "date": "2024-12-12",
+            "price": 20,
+            "recommended": true,
+            "category_id": 5
+        },
+        {
+            "id": 21,
+            "name": "Avant-première Film Indé",
+            "slug": "avant-premiere-film-inde",
+            "image": "/images/activities/indie.jpg",
+            "summary": "Projection exclusive d’un film indépendant en présence du réalisateur.",
+            "date": "2025-02-08",
+            "price": 15,
+            "recommended": true,
+            "category_id": 6
+        },
+        {
+            "id": 22,
+            "name": "Soirée Ciné Classique",
+            "slug": "soiree-cine-classique",
+            "image": "/images/activities/classic.jpg",
+            "summary": "Redécouvrez les grands classiques du cinéma sur grand écran.",
+            "date": "2024-10-01",
+            "price": null,
+            "recommended": false,
+            "category_id": 6
+        },
+        {
+            "id": 23,
+            "name": "Marathon Sci-Fi",
+            "slug": "marathon-sci-fi",
+            "image": "/images/activities/scifi.jpg",
+            "summary": "Une nuit entière dédiée aux films de science-fiction cultes.",
+            "date": "2025-03-28",
+            "price": 30,
+            "recommended": false,
+            "category_id": 6
+        },
+        {
+            "id": 24,
+            "name": "Festival du Court Métrage",
+            "slug": "festival-court-metrage",
+            "image": "/images/activities/shortfilm.jpg",
+            "summary": "Sélection des meilleurs courts métrages de jeunes réalisateurs.",
+            "date": "2024-11-09",
+            "price": null,
+            "recommended": true,
+            "category_id": 6
+        }
+    ]
+}
