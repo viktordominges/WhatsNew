@@ -1,15 +1,18 @@
+
+// frontend/src/stores/headerStore.js
 import { defineStore } from 'pinia';
+import { getCategoryName } from '@/config/categoriesConfig';
 
 export const useHeaderStore = defineStore('header', {
     state: () => ({
-        selectedCategory: '',
+        selectedCategorySlug: '',
         currentTitle: ''
     }),
     
     actions: {
-        setCategory(name) {
-            this.selectedCategory = name;
-            this.currentTitle = name;
+        setCategoryBySlug(slug) {
+            this.selectedCategorySlug = slug;
+            this.currentTitle = getCategoryName(slug);
         },
 
         setRouteTitle(path) {
@@ -19,7 +22,7 @@ export const useHeaderStore = defineStore('header', {
                 '/archives': 'Archives des événements'
             };
 
-            this.selectedCategory = '';
+            this.selectedCategorySlug = '';
             this.currentTitle = map[path] || '';
         }
     }

@@ -1,10 +1,10 @@
-// stores/eventsFilterStore.js
+// frontend/src/stores/eventsFilterStore.js
 import { defineStore } from 'pinia';
 
 export const useEventsFilterStore = defineStore('eventsFilter', {
     state: () => ({
         mode: 'current', // 'current' | 'archive'
-        category: null,  // null или id категории
+        categorySlug: null,  // null или slug категории (concerts, festivals, etc.)
         filters: {
             favorites: false,
             recommended: false,
@@ -27,8 +27,12 @@ export const useEventsFilterStore = defineStore('eventsFilter', {
             this.mode = mode;
         },
 
-        setCategory(name) {
-            this.category = name;
+        setCategoryBySlug(slug) {
+            this.categorySlug = slug;
+        },
+
+        clearCategory() {
+            this.categorySlug = null;
         },
 
         toggleFilter(name) {
@@ -36,7 +40,7 @@ export const useEventsFilterStore = defineStore('eventsFilter', {
         },
 
         resetFilters() {
-            this.category = null;
+            this.categorySlug = null;
             this.filters.favorites = false;
             this.filters.recommended = false;
             this.filters.free = false;

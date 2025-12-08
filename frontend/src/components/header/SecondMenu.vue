@@ -1,19 +1,10 @@
+
+<!-- frontend/src/components/header/SecondMenu.vue -->
 <script setup>
-
-import { useEventsFilterStore } from '@/stores/eventsFilterStore';
-import { useHeaderStore } from '@/stores/headerStore';
-
-const filterStore = useEventsFilterStore();
-const headerStore = useHeaderStore();
-
-const selectCategory = (name) => {
-    filterStore.setCategory(name);
-    headerStore.setCategory(name);
-};
+import CategoriesList from '@/components/categories/CategoriesList.vue';
 
 const icons = import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' });
 const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
-
 </script>
 
 <template>
@@ -21,37 +12,16 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
         <nav class="second-menu">
             <div class="geo-map">
                 <img :src="getIcon('map-point')" alt="Geo Map Icon">
-                <a href="#">Carte</a></div>
+                <a href="#">Carte</a>
+            </div>
             <div class="calendar">
                 <img :src="getIcon('calendar')" alt="Calendar Icon">
                 <a href="#">Calendrier</a>
             </div>
-            <ul class="categories-list">
-                <li @click="selectCategory('Concerts')">
-                    <img :src="getIcon('concert')" />
-                    <a>Concerts</a>
-                </li>
-                <li @click="selectCategory('Festivals')">
-                    <img :src="getIcon('fest')" alt="Festival Icon">
-                    <a>Festivals</a>
-                </li>
-                <li @click="selectCategory('Enfants')">
-                    <img :src="getIcon('teddy')" alt="Children Icon">
-                    <a>Enfants</a>
-                </li>
-                <li @click="selectCategory('Théatre')">
-                    <img :src="getIcon('theatre')" alt="Theater Icon">
-                    <a>Théâtre</a>
-                </li>
-                <li @click="selectCategory('Expositions')">
-                    <img :src="getIcon('expo')" alt="Exposition Icon">
-                    <a>Expositions</a>
-                </li>
-                <li @click="selectCategory('Cinéma')">
-                    <img :src="getIcon('cinema')" alt="Cinema Icon">
-                    <a>cinéma</a>
-                </li>
-            </ul>
+            
+            <!-- Используем общий компонент -->
+            <CategoriesList variant="menu" :showIcons="true" />
+            
             <div class="dots">
                 <a href="#">
                     <span>.</span>
@@ -64,127 +34,71 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
 </template>
 
 <style scoped>
-    .second-menu {
-        margin: 30px auto;
-		width: 100%;
-        height: 100px;
-        background-color: var(--color-dark-background);
-        opacity: 0.7;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 16px;
-		font-weight: 500;
-		text-align: center;
-        text-transform: uppercase;
-	}
+.second-menu {
+    margin: 30px auto;
+    width: 100%;
+    height: 100px;
+    background-color: var(--color-dark-background);
+    opacity: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+}
 
-    .second-menu a {
-        color: var(--color-white);
-    }
+.second-menu a {
+    color: var(--color-white);
+}
 
-    .geo-map , .calendar {
-        margin-right: 25px;
-        height: 100%;
-        min-width: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        border: 2px solid var(--color-white);
-        border-radius: 5px;
-        background-color: var(--color-dark-background);
-        transition: all 0.5s ease-in-out;
-    }
+.geo-map, .calendar {
+    margin-right: 25px;
+    height: 100%;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid var(--color-white);
+    border-radius: 5px;
+    background-color: var(--color-dark-background);
+    transition: all 0.5s ease-in-out;
+}
 
-    .geo-map:hover, .calendar:hover {
-        background-color: var(--color-black);
-    }
+.geo-map:hover, .calendar:hover {
+    background-color: var(--color-black);
+}
 
-    .geo-map img , .calendar img {
-        width: 30px;
-        height: 30px;
-    }
+.geo-map img, .calendar img {
+    width: 30px;
+    height: 30px;
+}
 
-    .categories-list {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        border: 2px solid var(--color-white);
-        border-radius: 5px;
-    }
+.dots {
+    margin-left: 10px;
+    height: 100%;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid var(--color-white);
+    border-radius: 5px;
+}
 
-    .categories-list li {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        border-right: 1px solid var(--color-white);
-        background-color: var(--color-dark-background);
-        transition: all 0.5s ease-in-out;
-    }
+.dots a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    .categories-list li:hover {
-        background-color: var(--color-orange);
-    }
-
-    .categories-list li img {
-        width: 30px;
-        height: 30px;
-    }
-
-    .categories-list li:last-of-type {
-        border: 0;
-    }
-
-    .dots {
-        margin-left: 10px;
-        height: 100%;
-        width: 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        border: 2px solid var(--color-white);
-        border-radius: 5px;
-    }
-
-    .dots a {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .dots span {
-        color: var(--color-white);
-        font-size: 28px;
-        line-height: 1;
-    }
-
-	.nav-1 a {
-		color: var(--color-white);
-		display: inline-block;
-		border-bottom: 1px solid #fff;
-	}
-
-	
-	.nav-1 a:hover {
-		color: var(--color-blue);
-		border-bottom: 1px solid var(--color-blue);
-	}
-
-	/* .nav-1 a:first-of-type {
-		border: 0;
-	} */
-
-	.nav-1 a.router-link-exact-active {
-		border: 0;
-	}
+.dots span {
+    color: var(--color-white);
+    font-size: 28px;
+    line-height: 1;
+}
 </style>

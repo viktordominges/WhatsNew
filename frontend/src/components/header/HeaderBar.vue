@@ -1,7 +1,14 @@
 <script setup>
+import { ref } from 'vue';
 import { RouterLink } from 'vue-router'
 import SearchBar from './SearchBar.vue'
 import userIcon from '@/assets/icons/user-icon.svg';
+
+const searchQuery = ref('');
+const onSearch = (query) => {
+    console.log('Search:', query);
+    // добавить логику поиска
+};
 </script>
 
 <template>

@@ -198,7 +198,7 @@
             "slug": "comedie-romantique-live",
             "image": "/images/activities/romantic.jpg",
             "summary": "Une pièce légère et amusante sur les relations modernes.",
-            "date": "2025-03-11",
+            "date": "2026-03-11",
             "price": 22,
             "recommended": true,
             "category_id": 4
@@ -220,7 +220,7 @@
             "slug": "expo-art-moderne",
             "image": "/images/activities/modern-art.jpg",
             "summary": "Une exposition présentant des œuvres contemporaines d’artistes internationaux.",
-            "date": "2025-01-30",
+            "date": "2026-01-30",
             "price": null,
             "recommended": true,
             "category_id": 5
@@ -264,7 +264,7 @@
             "slug": "avant-premiere-film-inde",
             "image": "/images/activities/indie.jpg",
             "summary": "Projection exclusive d’un film indépendant en présence du réalisateur.",
-            "date": "2025-02-08",
+            "date": "2026-02-08",
             "price": 15,
             "recommended": true,
             "category_id": 6
@@ -297,7 +297,7 @@
             "slug": "festival-court-metrage",
             "image": "/images/activities/shortfilm.jpg",
             "summary": "Sélection des meilleurs courts métrages de jeunes réalisateurs.",
-            "date": "2024-11-09",
+            "date": "2026-11-09",
             "price": null,
             "recommended": true,
             "category_id": 6

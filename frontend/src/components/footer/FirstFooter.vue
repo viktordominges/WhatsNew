@@ -1,14 +1,10 @@
+<!-- frontend/src/components/footer/FirstFooter.vue -->
 <script setup>
-import { RouterLink } from 'vue-router'
-import { useHeaderStore } from '@/stores/headerStore';
-
-const store = useHeaderStore();
-const select = (name) => {
-    store.setCategory(name);
-};
+import { RouterLink } from 'vue-router';
+import CategoriesList from '@/components/categories/CategoriesList.vue';
 </script>
 
-<template >
+<template>
     <section class="footer">
         <div class="container">
             <div class="wrapper">
@@ -23,27 +19,11 @@ const select = (name) => {
 
                 <div>
                     <h3 class="center">Catégories</h3>
-                    <ul class="categories-list">
-                        <li @click="select('Concerts')">
-                            <a>Concerts</a>
-                        </li>
-                        <li @click="select('Festivals')">
-                            <a>Festivals</a>
-                        </li>
-                        <li @click="select('Enfants')">
-                            <a>Enfants</a>
-                        </li>
-                        <li @click="select('Théatre')">
-                            <a>Théâtre</a>
-                        </li>
-                        <li @click="select('Expositions')">
-                            <a>Expositions</a>
-                        </li>
-                        <li @click="select('Cinéma')">
-                            <a>cinéma</a>
-                        </li>
-                    </ul>
+                    
+                    <!-- Используем общий компонент -->
+                    <CategoriesList variant="footer" :showIcons="false" />
                 </div>
+                
                 <div>
                     <h3>Contact</h3>
                     <ul>
@@ -58,57 +38,45 @@ const select = (name) => {
 </template>
 
 <style scoped>  
-    .footer {
-        width: 100%;
-        min-height: 200px;
-        margin-top: 100px;
-        background-color: var(--color-first-footer-background);
-    }
+.footer {
+    width: 100%;
+    min-height: 200px;
+    margin-top: 100px;
+    background-color: var(--color-first-footer-background);
+}
 
-    .wrapper {
-        padding: 50px 0;
-        display: grid;
-        grid-template-columns: 220px auto 220px;
-        align-items: start;
-        justify-items: stretch;
-        gap: 50px;
-        width: 100%;
-        height: 100%;
-    }
+.wrapper {
+    padding: 50px 0;
+    display: grid;
+    grid-template-columns: 220px auto 220px;
+    align-items: start;
+    justify-items: stretch;
+    gap: 50px;
+    width: 100%;
+    height: 100%;
+}
 
-    .footer h3 {
-        color: var(--color-first-footer-text);
-        font-size: 16px;
-        text-transform: uppercase;
-    }
+.footer h3 {
+    color: var(--color-first-footer-text);
+    font-size: 16px;
+    text-transform: uppercase;
+}
 
-    .footer h3.center {
-        text-align: center;
-    }
+.footer h3.center {
+    text-align: center;
+}
 
-    nav, ul {
-        margin-top: 35px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+nav, ul {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    a, li {
-        color: var(--color-first-footer-text);
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 1.5;
-    }
-
-    .categories-list {
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-        gap: 20px 30px;
-        justify-items: center;
-        width: 100%;
-    }
-
-    .categories-list li a {
-        text-transform: uppercase;
-    }
+a, li {
+    color: var(--color-first-footer-text);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+}
 </style>
