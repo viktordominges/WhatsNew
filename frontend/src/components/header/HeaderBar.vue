@@ -8,7 +8,7 @@ import userIcon from '@/assets/icons/user-icon.svg';
     <div class="header-bar">
         <div class="container">
             <div class="bar-wrapper">
-                <h1 class="logo">Quoi de neuf</h1>
+                <div class="logo">Quoi de neuf</div>
 
                 <SearchBar
                     v-model="searchQuery"

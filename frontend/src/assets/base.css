@@ -5,6 +5,9 @@
     --color-light-background: #EBFDFF;
     --color-dark-background: #161919;
 
+    --color-light-card-background: #e1fafb;
+    --color-dark-card-background: #222532;
+
     --color-gray-light: #979797;
     --color-gray-dark: #2D3436;  /* for card links on light mode */
 
@@ -23,8 +26,26 @@
     --size-container-sm: 540px;
     --size-container-md: 720px;
     --size-container-lg: 960px;
-    --size-container-xl: 1140px;
+    --size-container-xl: 1280px;
     --size-container-xxl: 1320px;
+
+    /* font sizes */
+    --font-size-xxxs: 0.625rem; /* 10px */
+    --font-size-xxs: 0.75rem; /* 12px */
+    --font-size-xs: 1rem; /* 16px */
+    --font-size-sm: 1.25rem; /* 20px */
+    --font-size-md: 1.5rem; /* 24px */
+    --font-size-lg: 1.75rem; /* 28px */
+    --font-size-xl: 2rem; /* 32px */
+    --font-size-xxl: 2.25rem; /* 36px */
+    --font-size-xxxl: 3rem; /* 48px */
+
+    /* font weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extra-bold: 800;
 }
 
 /* semantic color variables for this project */
@@ -32,6 +53,7 @@
     --color-text: var(--color-dark-text);
     --color-background: var(--color-light-background);
     --color-links: var(--color-gray-dark);
+    --color-card-background: var(--color-light-card-background);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,6 +61,7 @@
         --color-text: var(--color-light-text);
         --color-background: var(--color-dark-background);
         --color-links: var(--color-green);
+        --color-card-background: var(--color-dark-card-background);
     }
 }
 
@@ -50,6 +73,11 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
 a {
     text-decoration: none;
     line-height: 1;
@@ -58,6 +86,47 @@ a {
 
 li {
     list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.5;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+h1 {
+    font-size: var(--font-size-xxl); /* 36px */
+}
+
+h2 {
+    font-size: var(--font-size-xl); /* 32px */
+}
+
+h3 {
+    font-size: var(--font-size-lg); /* 28px */
+}
+
+h4 {
+    font-size: var(--font-size-md); /* 24px */
+}
+
+h5 {
+    font-size: var(--font-size-sm); /* 20px */
+}
+
+h6 {
+    font-size: var(--font-size-xs); /* 16px */
+}
+
+p {
+    font-size: var(--font-size-xs); /* 16px */
+    line-height: 1.5;
 }
 
 body {
@@ -83,7 +152,7 @@ body {
         'Droid Sans',
         'Helvetica Neue',
         sans-serif;
-    font-size: 15px;
+    font-size: var(--font-size-xs); /* 16px */
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -109,12 +178,12 @@ body {
     justify-content: center;
     align-items: center;
     padding: 10px;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-xs); /* 16px */
     line-height: 1;
     cursor: pointer;
     text-transform: uppercase;
+    border-radius: 5px;
 }
 
 .blue-transparent-btn {

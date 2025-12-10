@@ -38,8 +38,8 @@ watch(
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		font-size: 20px;
-		font-weight: 500;
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-regular);
 		text-align: center;
 		margin: 0 auto;
 	}

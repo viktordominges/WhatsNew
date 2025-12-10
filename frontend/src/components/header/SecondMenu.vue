@@ -86,7 +86,7 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
     .geo-map , .calendar {
         margin-right: 25px;
         height: 100%;
-        min-width: 120px;
+        min-width: 150px;
         display: flex;
         flex-direction: column;
         justify-content: center;

@@ -80,6 +80,7 @@ const select = (name) => {
         color: var(--color-first-footer-text);
         font-size: 16px;
         text-transform: uppercase;
+        text-align: left;
     }
 
     .footer h3.center {
