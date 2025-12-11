@@ -41,7 +41,7 @@ watch(
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-regular);
 		text-align: center;
-		margin: 0 auto;
+		margin: 30px auto;
 	}
 
 	.nav-1 a {

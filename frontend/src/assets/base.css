@@ -158,6 +158,15 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+header, footer {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
 #app {
     margin: 0 auto;
     font-weight: normal;
@@ -189,10 +198,22 @@ body {
 .blue-transparent-btn {
     border: 2px solid var(--color-blue);
     color: var(--color-blue);
+    box-shadow: 0;
+}
+
+.blue-transparent-btn:hover {
+    box-shadow: -2px 2px 4px rgba(69, 188, 231, 0.3);
 }
 
 .orange-btn {
     border: none;
     background-color: var(--color-orange);
     color: var(--color-white);
+    box-shadow: 0;
+}
+
+.orange-btn:hover {
+    background-color: var(--color-orange);
+    color: var(--color-white);
+    box-shadow: -2px 2px 4px rgba(255, 51, 5, 0.3);
 }

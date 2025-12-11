@@ -8,7 +8,7 @@ import userIcon from '@/assets/icons/user-icon.svg';
     <div class="header-bar">
         <div class="container">
             <div class="bar-wrapper">
-                <div class="logo">Quoi de neuf</div>
+                <RouterLink class="logo" to="/">Quoi de neuf</RouterLink>
 
                 <SearchBar
                     v-model="searchQuery"
@@ -33,7 +33,7 @@ import userIcon from '@/assets/icons/user-icon.svg';
     .header-bar {
         width: 100%;
         height: 70px;
-        margin-top: 30px;
+        /* margin-top: 30px; */
         background-color: var(--color-gray-dark);
         display: flex;
         align-items: center;

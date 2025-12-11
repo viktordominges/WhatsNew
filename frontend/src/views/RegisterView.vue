@@ -1,12 +1,12 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="register">
+    <h1>This is a register page</h1>
   </div>
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
-  .about {
+  .register {
     min-height: 100vh;
     display: flex;
     align-items: center;

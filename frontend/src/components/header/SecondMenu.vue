@@ -1,5 +1,5 @@
 <script setup>
-
+import { RouterLink } from 'vue-router';
 import { useEventsFilterStore } from '@/stores/eventsFilterStore';
 import { useHeaderStore } from '@/stores/headerStore';
 
@@ -19,9 +19,10 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
 <template>
     <div class="container">
         <nav class="second-menu">
-            <div class="geo-map">
+            <RouterLink class="geo-map" to="/geo-map">
                 <img :src="getIcon('map-point')" alt="Geo Map Icon">
-                <a href="#">Carte</a></div>
+                Carte
+            </RouterLink>
             <div class="calendar">
                 <img :src="getIcon('calendar')" alt="Calendar Icon">
                 <a href="#">Calendrier</a>
@@ -83,7 +84,7 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
         color: var(--color-white);
     }
 
-    .geo-map , .calendar {
+    .geo-map, .calendar {
         margin-right: 25px;
         height: 100%;
         min-width: 150px;

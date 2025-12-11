@@ -1,12 +1,24 @@
 <script setup>
 const icons = import.meta.glob('@/assets/icons/card-icons/*.svg', { eager: true, import: 'default' });
 const getIcon = name => icons[`/src/assets/icons/card-icons/${name}.svg`];
-
 import defaultPoster from '@/assets/images/default-card-poster.jpg';
+import { ref, onMounted, nextTick } from 'vue';
+
+const hoverBlockRef = ref(null);
+const hoverHeight = ref(0);
+
+onMounted(async () => {
+  await nextTick();
+  hoverHeight.value = hoverBlockRef.value.offsetHeight;
+});
+
+console.log(hoverHeight);
+
+
 </script>
 
 <template>
-    <div class="activity-card">
+    <div class="activity-card" :style="{ '--hoverHeight': hoverHeight + 'px' }">
         <div class="activity-poster">
             <img :src="defaultPoster" alt="Activity Poster">
             <div class="poster-bar">
@@ -32,9 +44,9 @@ import defaultPoster from '@/assets/images/default-card-poster.jpg';
                 </div>
             </div>
             
-            <div class="card-hover-block">
+            <div class="card-hover-block" ref="hoverBlockRef">
                 <p class="activity-description">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien. Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien...
+                Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi.. 
                 </p>
                 <button class="btn orange-btn">Savoir plus</button>
             </div>
@@ -231,7 +243,7 @@ import defaultPoster from '@/assets/images/default-card-poster.jpg';
     position: absolute;
     left: 0;
     top: 150px;
-    height: 320px;
+    height: fit-content;
     padding: 0 25px 25px 25px;
     background-color: var(--color-card-background);
     display: flex;
@@ -270,7 +282,7 @@ import defaultPoster from '@/assets/images/default-card-poster.jpg';
 }
 
 .activity-card:hover .category-absolut-block {
-    transform: translateY(300px);
+    transform: translateY(var(--hoverHeight));
 }
 
 </style>
