@@ -61,7 +61,7 @@ const select = (name) => {
     .footer {
         width: 100%;
         min-height: 200px;
-        margin-top: 100px;
+        /* margin-top: 100px; */
         background-color: var(--color-first-footer-background);
     }
 

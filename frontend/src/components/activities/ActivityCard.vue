@@ -126,7 +126,7 @@ console.log(hoverHeight);
     padding: 2px 5px;
     background-color: var(--color-green);
     color: var(--color-dark-text);
-    border-radius: 5px;
+    border-radius: var(--card-border-radius);
     font-size: var(--font-size-xxxs);
     font-weight: var(--font-weight-medium);
 }

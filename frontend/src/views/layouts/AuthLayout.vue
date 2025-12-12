@@ -7,12 +7,12 @@ import { FirstFooter, SecondFooter, ThirdFooter } from '@/components/footer';
 </script>
 
 <template>
-    <header class="auth-header">
+    <header>
 		
 		<HeaderBar />
 
 	</header>
-	<main>
+	<main class="auth-main">
 		<div class="container">
 			
 			<RouterView />
@@ -27,3 +27,9 @@ import { FirstFooter, SecondFooter, ThirdFooter } from '@/components/footer';
 
 	</footer>
 </template>
+
+<style scoped>
+.auth-main {
+    padding-top: 30px;
+}
+</style>

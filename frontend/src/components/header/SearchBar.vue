@@ -71,7 +71,7 @@ const emitSearch = () => {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: var(--font-size-xs);
     background: transparent;
     color: var(--color-white);
 }

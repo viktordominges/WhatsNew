@@ -22,6 +22,10 @@
     --color-blue: #45BCE7;
     --color-green: #4AF6CD; /* for card links on dark mode */
 
+    --color-success: #0c5b2d;
+    --color-error: #a51b1b;
+    --color-warning: #965d07;
+
     /* container sizes */
     --size-container-sm: 540px;
     --size-container-md: 720px;
@@ -46,6 +50,10 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
     --font-weight-extra-bold: 800;
+
+    --btn-border-radius: 5px;
+    --card-border-radius: 5px;
+    --form-border-radius: 10px;
 }
 
 /* semantic color variables for this project */
@@ -54,6 +62,7 @@
     --color-background: var(--color-light-background);
     --color-links: var(--color-gray-dark);
     --color-card-background: var(--color-light-card-background);
+    --color-form-background: var(--color-white);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -62,6 +71,7 @@
         --color-background: var(--color-dark-background);
         --color-links: var(--color-green);
         --color-card-background: var(--color-dark-card-background);
+        --color-form-background: var(--color-gray-dark);
     }
 }
 
@@ -165,6 +175,7 @@ header, footer {
 
 main {
     flex: 1 0 auto;
+    padding-bottom: 90px;
 }
 
 #app {
@@ -182,6 +193,9 @@ main {
     margin: 0 auto;
 }
 
+/*============================================================================
+    Buttons
+============================================================================*/
 .btn {
     display: flex;
     justify-content: center;
@@ -192,7 +206,8 @@ main {
     line-height: 1;
     cursor: pointer;
     text-transform: uppercase;
-    border-radius: 5px;
+    border-radius: var(--btn-border-radius);
+    transition: all 0.3s ease-in-out;
 }
 
 .blue-transparent-btn {
@@ -200,9 +215,10 @@ main {
     color: var(--color-blue);
     box-shadow: 0;
 }
-
+ 
 .blue-transparent-btn:hover {
-    box-shadow: -2px 2px 4px rgba(69, 188, 231, 0.3);
+    box-shadow: 0 4px 12px rgba(69, 188, 231, 0.3);
+    transform: translateY(-1px);
 }
 
 .orange-btn {
@@ -215,5 +231,6 @@ main {
 .orange-btn:hover {
     background-color: var(--color-orange);
     color: var(--color-white);
-    box-shadow: -2px 2px 4px rgba(255, 51, 5, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 51, 5, 0.3);
+    transform: translateY(-1px);
 }

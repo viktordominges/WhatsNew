@@ -1,14 +1,38 @@
-<template>
-    <section style="padding: 80px 20px; text-align:center;">
-        <h1 style="font-size:42px; font-weight:700;">404</h1>
-        <p style="font-size:18px; margin-top:10px;">Page non trouvée</p>
+<script setup>
+import { RouterLink } from 'vue-router'
+</script>
 
-        <router-link to="/" style="margin-top:20px; display:inline-block; text-decoration:underline;">
+<template>
+    <section class="not-found">
+        <h1>404</h1>
+        <p>Page non trouvée</p>
+
+        <RouterLink to="/">
         Retour à l'accueil
-        </router-link>
+        </RouterLink>
+
     </section>
 </template>
 
 <style scoped>
+.not-found {
+    padding: 80px 20px; 
+    text-align: center;
+}
 
+.not-found h1 {
+    font-size:42px; 
+    font-weight:700;
+}
+
+.not-found p {
+    font-size:18px; 
+    margin-top:10px;
+}
+
+.not-found a {
+    margin-top:20px; 
+    display:inline-block; 
+    text-decoration:underline;
+}
 </style>
