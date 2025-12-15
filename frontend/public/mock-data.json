@@ -302,5 +302,35 @@
             "recommended": true,
             "category_id": 6
         }
-    ]
+    ],
+    "faq": [
+        {
+            "question": "Comment ajouter un événement sur le site ?",
+            "answer": "Pour ajouter un événement, remplissez le formulaire dédié sur la page « Ajouter un événement ». Indiquez le titre, la date, le lieu, la description, une image et le lien d’inscription (si disponible). Après l’envoi, le formulaire sera examiné par un administrateur. Nous vérifions les informations, contactons l’organisateur si nécessaire et publions l’événement dans un délai de 3 jours ouvrables."
+        },
+        {
+            "question": "Combien de temps avant la date de l’événement peut-on soumettre une demande de publication ?",
+            "answer": "Vous devez soumettre votre événement au moins 3 jours ouvrables avant sa date. Ce délai est nécessaire pour vérifier les informations et garantir une publication correcte."
+        },
+        {
+            "question": "Que faire si mon événement n’a pas de site ou de page de réservation ?",
+            "answer": "Si vous ne disposez pas d’une page d’atterrissage ou d’un site pour l’événement, nous pouvons créer pour vous une landing page dédiée. Les utilisateurs pourront y accéder pour s’inscrire, réserver une place ou acheter un billet. Pour commander ce service, contactez-nous via la section « Contact » du site."
+        },
+        {
+            "question": "Comment participer à un événement ?",
+            "answer": "Sur la page de chaque événement, vous trouverez un bouton ou un lien d’inscription. En cliquant dessus, vous serez redirigé vers le site de l’organisateur ou vers une page dédiée, où vous pourrez réserver votre participation, acheter des billets ou obtenir plus d’informations."
+        },
+        {
+            "question": "Faut-il payer pour publier un événement ?",
+            "answer": "La publication de base d’un événement sur la plateforme est gratuite. Vous pouvez également bénéficier de services de promotion payants (mise en avant dans les listes, publicité, recommandations, etc.) pour augmenter votre visibilité et attirer davantage de participants."
+        },
+        {
+            "question": "Puis-je modifier ou supprimer mon événement après sa publication ?",
+            "answer": "Oui. L’organisateur peut demander la modification ou la suppression de son événement via le formulaire de contact ou par e-mail (indiqué dans la section « Contact »). Les changements sont effectués dans un délai de 1 jour ouvrable."
+        },
+        {
+            "question": "Comment les utilisateurs peuvent-ils enregistrer ou suivre les événements qui les intéressent ?",
+            "answer": "Les utilisateurs connectés peuvent ajouter des événements à leurs favoris, recevoir des notifications avant la date, et consulter l’archive des événements déjà passés — avec la possibilité de lire ou laisser des avis. Cela permet d’organiser facilement son temps libre."
+        }
+  ]
 }
