@@ -21,10 +21,10 @@
     --color-orange: #FF3305;
     --color-blue: #45BCE7;
     --color-green: #4AF6CD; /* for card links on dark mode */
-
+ 
     --color-success: #0c5b2d;
     --color-error: #a51b1b;
-    --color-warning: #965d07;
+    --color-warning: #c6801d;
 
     /* container sizes */
     --size-container-sm: 540px;
@@ -197,6 +197,7 @@ main {
     Buttons
 ============================================================================*/
 .btn {
+    /* width: 100%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -206,8 +207,13 @@ main {
     line-height: 1;
     cursor: pointer;
     text-transform: uppercase;
+    border: none;
     border-radius: var(--btn-border-radius);
     transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
 }
 
 .blue-transparent-btn {
@@ -218,19 +224,57 @@ main {
  
 .blue-transparent-btn:hover {
     box-shadow: 0 4px 12px rgba(69, 188, 231, 0.3);
-    transform: translateY(-1px);
 }
 
 .orange-btn {
-    border: none;
     background-color: var(--color-orange);
     color: var(--color-white);
     box-shadow: 0;
 }
 
 .orange-btn:hover {
-    background-color: var(--color-orange);
-    color: var(--color-white);
     box-shadow: 0 4px 12px rgba(255, 51, 5, 0.3);
-    transform: translateY(-1px);
+}
+
+.primary-form-btn {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: var(--color-blue);
+    color: var(--color-white);
+    box-shadow: 0;
+}
+
+.primary-form-btn:hover:not(:disabled) {
+    background-color: #008fb3;
+    box-shadow: 0 4px 12px rgba(0, 168, 204, 0.3);
+}
+
+.primary-form-btn:hover:disabled {
+    background-color: var(--color-gray-light);
+    box-shadow: 0;
+    transform: translateY(0);
+    cursor: not-allowed;
+}
+
+.primary-form-btn:disabled {
+    background-color: var(--color-gray-light);
+    cursor: not-allowed;
+}
+
+.secondary-form-btn {
+    width: 100%;
+    border: 3px solid var(--color-text);
+    background-color: transparent;
+    color: var(--color-text);
+    box-shadow: 0;
+}
+
+.secondary-form-btn:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-form-btn:disabled {
+    border: 3px solid var(--color-gray-light);
+    color: var(--color-gray-light);
+    cursor: not-allowed;
 }

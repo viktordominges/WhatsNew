@@ -161,7 +161,7 @@
         <!-- Submit button -->
         <button 
           type="submit" 
-          class="auth-button"
+          class="btn primary-form-btn"
           :disabled="isSubmitting"
         >
           {{ isSubmitting ? 'INSCRIPTION...' : "S'ENREGISTRER" }}
@@ -179,7 +179,7 @@
   </section>
 </template>
 
-
+ 
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
@@ -255,8 +255,8 @@ function validateUsername() {
 
   if (!value) {
     errors.value.username = "Le nom d'utilisateur est obligatoire."
-  } else if (value.length < 3) {
-    errors.value.username = "Le nom d'utilisateur doit contenir au moins 3 caractères."
+  } else if (value.length < 2) {
+    errors.value.username = "Le nom d'utilisateur doit contenir au moins 2 caractères."
   } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
     errors.value.username = "Le nom d'utilisateur ne peut contenir que des lettres, chiffres et underscores."
   } else {

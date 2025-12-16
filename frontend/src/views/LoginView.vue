@@ -77,7 +77,7 @@
             <!-- Submit button -->
             <button 
             type="submit" 
-            class="auth-button"
+            class="btn primary-form-btn"
             :disabled="isSubmitting"
             >
             {{ isSubmitting ? 'CONNEXION...' : 'SE CONNECTER' }}

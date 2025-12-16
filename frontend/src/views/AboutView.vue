@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import ContactForm from '@/components/ContactForm.vue';
 import Accordion from '@/components/ui/Accordion.vue';
+import Tabs from '@/components/ui/Tabs.vue';
 import { ref, onMounted } from 'vue'
 
 const faqItems = ref([])
@@ -10,9 +12,21 @@ onMounted(async () => {
     faqItems.value = data.faq
 })
 
+const tabs = [
+    {
+        label: 'Nos contacts',
+        slot: 'contactsList'
+    },
+    {
+        label: 'Formulaire de contact',
+        component: ContactForm
+    }
+]
+
 </script>
 
 <template>
+
     <section class="about">
         <div class="chapter">
             <h2>À propos du projet</h2>
@@ -56,10 +70,32 @@ onMounted(async () => {
     </section>
 
     <section class="faq">
+
         <Accordion 
         :items="faqItems"
-        :defaultOpenIndex="1"
+        :defaultOpenIndex="0"
         />
+
+    </section>
+
+    <section class="contacts">
+        <div class="contacts-header">
+            <h2>Contacts</h2>
+            <p>Des questions ? N’hésitez pas à nous contacter, nous serons ravis d’y répondre.</p>
+        </div>
+
+        <div class="contacts-tabs">
+            <Tabs :items="tabs">
+                <template #contactsList>
+                    <ul class="contacts-list">
+                        <li>Rue Paul Pastur 2B, 7500</li>
+                        <li>quoideneuf@gmail.com</li>
+                        <li>+32 457 77 77 77</li>
+                    </ul>
+                </template>
+            </Tabs>
+        </div>
+
     </section>
 </template>
 
@@ -86,4 +122,37 @@ onMounted(async () => {
 .chapter p {
     margin-top: 10px;
 }
+
+.contacts {
+    margin-top: 90px;
+    padding: 0 20px;
+}
+
+.contacts-header {
+    text-align: center;
+}
+
+.contacts-header p {
+    margin-top: 20px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.contacts-tabs {
+    margin-top: 40px;
+
+}
+
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 60px;
+    padding: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
 </style>
