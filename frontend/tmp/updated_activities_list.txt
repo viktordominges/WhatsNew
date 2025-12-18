@@ -1,0 +1,141 @@
+<script setup>
+import { computed } from 'vue';
+import { useEventsFilterStore } from '@/stores/eventsFilterStore';
+import { useFavoritesStore } from '@/stores/favoritesStore';
+
+// временные данные
+import activities from '@/data/activities.json';
+
+const filterStore = useEventsFilterStore();
+const favoritesStore = useFavoritesStore();
+
+const filteredActivities = computed(() => {
+    let result = activities;
+
+    // 1. фильтр по режиму (архив/актуальные)
+    if (filterStore.isArchive) {
+        const now = new Date();
+        result = result.filter(a => new Date(a.date) < now);
+    } else {
+        const now = new Date();
+        result = result.filter(a => new Date(a.date) >= now);
+    }
+
+    // 2. фильтр по категории (по slug)
+    if (filterStore.categorySlug) {
+        result = result.filter(a => a.category_slug === filterStore.categorySlug);
+    }
+
+    // 3. favorites (через localStorage / Pinia)
+    if (filterStore.filters.favorites) {
+        result = result.filter(a => favoritesStore.isFavorite(a.id));
+    }
+
+    // 4. recommended
+    if (filterStore.filters.recommended) {
+        result = result.filter(a => a.recommended === true);
+    }
+
+    // 5. free
+    if (filterStore.filters.free) {
+        result = result.filter(a => a.price === null || a.price === 0);
+    }
+
+    return result;
+});
+</script>
+
+<template>
+    <div class="activities">
+        <div
+            v-for="activity in filteredActivities"
+            :key="activity.id"
+            class="activity-card"
+        >
+            <h3>{{ activity.name }}</h3>
+            <p class="date">{{ new Date(activity.date).toLocaleDateString('fr-FR') }}</p>
+            <p class="price">
+                {{ activity.price ? `${activity.price}€` : 'Gratuit' }}
+            </p>
+            
+            <button 
+                class="favorite-btn"
+                @click="favoritesStore.toggle(activity.id)"
+                :class="{ active: favoritesStore.isFavorite(activity.id) }"
+            >
+                {{ favoritesStore.isFavorite(activity.id) ? '★' : '☆' }}
+            </button>
+        </div>
+
+        <p v-if="filteredActivities.length === 0" class="no-results">
+            Aucun événement trouvé avec ces filtres
+        </p>
+    </div>
+</template>
+
+<style scoped>
+.activities {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.activity-card {
+    position: relative;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.activity-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.date {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-orange, #ff6b35);
+    margin: 10px 0;
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s ease;
+}
+
+.favorite-btn:hover,
+.favorite-btn.active {
+    color: #ffd700;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 18px;
+}
+</style>

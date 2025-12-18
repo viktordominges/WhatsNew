@@ -1,0 +1,235 @@
+/* Общие стили для страниц авторизации и регистрации */
+
+.auth-page {
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+} 
+
+.auth-container {
+    background-color: transparent;
+    border-radius: var(--form-border-radius);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+}
+
+.auth-title {
+    margin-bottom: 30px;
+}
+
+/* Notification styles */
+.notification {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 200px;
+    text-align: center;
+    color: var(--color-white);
+}
+
+.notification.success {
+    background-color: var(--color-success);
+}
+
+.notification.error {
+    background-color: var(--color-error);
+}
+
+.notification.warning {
+    background-color: var(--color-warning);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.fade-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+/* Form styles */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: 3px solid var(--color-black);
+    border-radius: 8px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+    background-color: var(--color-form-background);
+    transition: border-color 0.3s ease;
+    outline: none;
+}
+
+.input-field:focus {
+    border-color: var(--color-blue);
+}
+
+.input-field.error {
+    border-color: var(--color-error);
+}
+
+.password-wrapper .input-field {
+    padding-right: 50px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-black);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--color-blue);
+}
+
+.error-msg {
+    color: var(--color-error);
+    font-size: var(--font-size-xxs);
+    margin: 0;
+}
+
+.form-error-msg {
+    background-color: var(--color-white);
+    color: var(--color-error);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    margin: 0;
+}
+
+/* Links */
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--font-size-xs);
+    transition: color 0.2s ease;
+}
+
+.link:hover {
+    color: #008fb3;
+}
+
+.link.underline {
+    text-decoration: underline;
+}
+
+.auth-links p {
+    margin: 0;
+    color: var(--color-gray-dark);
+    font-size: var(--font-size-xs);
+}
+
+/* Password strength indicator */
+.password-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.strength-bar {
+    height: 4px;
+    flex: 1;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.strength-bar.active.weak {
+    background-color: #f44336;
+}
+
+.strength-bar.active.medium {
+    background-color: #ff9800;
+}
+
+.strength-bar.active.strong {
+    background-color: #4caf50;
+}
+
+.strength-text {
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.strength-text.weak {
+    color: #f44336;
+}
+
+.strength-text.medium {
+    color: #ff9800;
+}
+
+.strength-text.strong {
+    color: #4caf50;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 40px 25px;
+    }
+
+    .auth-title {
+        font-size: var(--font-size-md);
+    }
+
+    .notification {
+        top: -50px;
+        min-width: 180px;
+        font-size: 13px;
+        padding: 12px 20px;
+    }
+}

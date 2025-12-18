@@ -1,12 +1,12 @@
 <template>
-  <div class="add-activity">
-    <h1>This is an add activity page</h1>
+  <div class="map">
+    <h1>This is a geo map page</h1>
   </div>
 </template>
 
-<style>
+<style scoped>
 @media (min-width: 1024px) {
-  .about {
+  .map {
     min-height: 100vh;
     display: flex;
     align-items: center;

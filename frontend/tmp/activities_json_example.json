@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Concert de Jazz au Parc",
+    "category_slug": "concerts",
+    "date": "2024-12-20",
+    "price": 25,
+    "recommended": true,
+    "description": "Soirée jazz avec des artistes locaux"
+  },
+  {
+    "id": 2,
+    "name": "Festival d'été",
+    "category_slug": "festivals",
+    "date": "2025-01-15",
+    "price": null,
+    "recommended": true,
+    "description": "Grand festival gratuit avec plusieurs scènes"
+  },
+  {
+    "id": 3,
+    "name": "Spectacle pour enfants",
+    "category_slug": "enfants",
+    "date": "2024-12-18",
+    "price": 10,
+    "recommended": false,
+    "description": "Spectacle interactif pour les 3-8 ans"
+  },
+  {
+    "id": 4,
+    "name": "Hamlet - Théâtre National",
+    "category_slug": "theatre",
+    "date": "2025-01-05",
+    "price": 35,
+    "recommended": true,
+    "description": "Version moderne du classique de Shakespeare"
+  },
+  {
+    "id": 5,
+    "name": "Exposition d'Art Moderne",
+    "category_slug": "expositions",
+    "date": "2024-11-30",
+    "price": null,
+    "recommended": false,
+    "description": "Artistes contemporains belges"
+  },
+  {
+    "id": 6,
+    "name": "Soirée Cinéma en Plein Air",
+    "category_slug": "cinema",
+    "date": "2024-12-10",
+    "price": 0,
+    "recommended": true,
+    "description": "Projection gratuite d'un classique du cinéma"
+  },
+  {
+    "id": 7,
+    "name": "Rock Festival 2025",
+    "category_slug": "festivals",
+    "date": "2025-02-10",
+    "price": 50,
+    "recommended": true,
+    "description": "3 jours de concerts rock"
+  },
+  {
+    "id": 8,
+    "name": "Atelier Peinture Enfants",
+    "category_slug": "enfants",
+    "date": "2024-12-22",
+    "price": 5,
+    "recommended": false,
+    "description": "Atelier créatif pour jeunes artistes"
+  }
+]

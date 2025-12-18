@@ -15,7 +15,7 @@ const onSearch = (query) => {
     <div class="header-bar">
         <div class="container">
             <div class="bar-wrapper">
-                <h1 class="logo">Quoi de neuf</h1>
+                <RouterLink class="logo" to="/">Quoi de neuf</RouterLink>
 
                 <SearchBar
                     v-model="searchQuery"
@@ -25,7 +25,7 @@ const onSearch = (query) => {
                 />
 
                 <nav>
-                    <RouterLink class="btn blue-transparent-btn" to="/add-activity">Ajouter un événement</RouterLink>
+                    <RouterLink class="btn blue-transparent-btn" to="/profile">Ajouter un événement</RouterLink>
                     <RouterLink class="btn orange-btn" to="/login">
                         <img :src="userIcon" alt="User Icon">
                         Entrée
@@ -40,7 +40,7 @@ const onSearch = (query) => {
     .header-bar {
         width: 100%;
         height: 70px;
-        margin-top: 30px;
+        /* margin-top: 30px; */
         background-color: var(--color-gray-dark);
         display: flex;
         align-items: center;

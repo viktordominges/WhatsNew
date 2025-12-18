@@ -25,19 +25,24 @@ const store = useEventsFilterStore();
 
 <style scoped>
 .filters {
+    margin-top: 20px;
     display: flex;
-    gap: 16px;
+    gap: 40px;
 }
 
 .filter-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 14px;
+    gap: 15px;
+    font-size: var(--font-size-xs); /* 16px */
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
+    text-transform: uppercase;
 }
 
 input[type="checkbox"] {
     cursor: pointer;
+    width: 20px;
+    height: 20px;
 }
 </style>

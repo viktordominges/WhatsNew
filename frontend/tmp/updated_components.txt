@@ -1,0 +1,187 @@
+<!-- frontend/src/components/header/SecondMenu.vue -->
+<script setup>
+import CategoriesList from '@/components/CategoriesList.vue';
+
+const icons = import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' });
+const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
+</script>
+
+<template>
+    <div class="container">
+        <nav class="second-menu">
+            <div class="geo-map">
+                <img :src="getIcon('map-point')" alt="Geo Map Icon">
+                <a href="#">Carte</a>
+            </div>
+            <div class="calendar">
+                <img :src="getIcon('calendar')" alt="Calendar Icon">
+                <a href="#">Calendrier</a>
+            </div>
+            
+            <!-- Используем общий компонент -->
+            <CategoriesList variant="menu" :showIcons="true" />
+            
+            <div class="dots">
+                <a href="#">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+</template>
+
+<style scoped>
+.second-menu {
+    margin: 30px auto;
+    width: 100%;
+    height: 100px;
+    background-color: var(--color-dark-background);
+    opacity: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.second-menu a {
+    color: var(--color-white);
+}
+
+.geo-map, .calendar {
+    margin-right: 25px;
+    height: 100%;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid var(--color-white);
+    border-radius: 5px;
+    background-color: var(--color-dark-background);
+    transition: all 0.5s ease-in-out;
+}
+
+.geo-map:hover, .calendar:hover {
+    background-color: var(--color-black);
+}
+
+.geo-map img, .calendar img {
+    width: 30px;
+    height: 30px;
+}
+
+.dots {
+    margin-left: 10px;
+    height: 100%;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid var(--color-white);
+    border-radius: 5px;
+}
+
+.dots a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dots span {
+    color: var(--color-white);
+    font-size: 28px;
+    line-height: 1;
+}
+</style>
+
+<!-- ============================================ -->
+<!-- frontend/src/components/footer/FirstFooter.vue -->
+<script setup>
+import { RouterLink } from 'vue-router';
+import CategoriesList from '@/components/CategoriesList.vue';
+</script>
+
+<template>
+    <section class="footer">
+        <div class="container">
+            <div class="wrapper">
+                <div>
+                    <h3>À propos du site</h3>
+                    <nav>
+                        <RouterLink to="/about">À propos du projet</RouterLink>
+                        <RouterLink to="/archives">Archives des événements</RouterLink>
+                        <RouterLink to="/about">Questions fréquemment posées</RouterLink>
+                    </nav>
+                </div>
+
+                <div>
+                    <h3 class="center">Catégories</h3>
+                    
+                    <!-- Используем общий компонент -->
+                    <CategoriesList variant="footer" :showIcons="false" />
+                </div>
+                
+                <div>
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>Rue Paul Pastur 2B, 7500</li>
+                        <li>quoideneuf@gmail.com</li>
+                        <li>+32 457 77 77 77</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
+
+<style scoped>  
+.footer {
+    width: 100%;
+    min-height: 200px;
+    margin-top: 100px;
+    background-color: var(--color-first-footer-background);
+}
+
+.wrapper {
+    padding: 50px 0;
+    display: grid;
+    grid-template-columns: 220px auto 220px;
+    align-items: start;
+    justify-items: stretch;
+    gap: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.footer h3 {
+    color: var(--color-first-footer-text);
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.footer h3.center {
+    text-align: center;
+}
+
+nav, ul {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+a, li {
+    color: var(--color-first-footer-text);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+</style>

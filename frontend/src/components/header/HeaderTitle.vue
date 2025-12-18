@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <div class="greetings">
-        <h2>{{ title }}</h2>
+        <h1>{{ title }}</h1>
     </div>
 </template>
 
@@ -19,12 +19,9 @@ defineProps({
     margin-top: 170px;
 }
 
-.greetings h2 {
+.greetings h1 {
     text-align: center;
-    font-size: 36px;
-    font-weight: 700;
     color: var(--color-white);
-    text-transform: uppercase;
 }
 
 </style>

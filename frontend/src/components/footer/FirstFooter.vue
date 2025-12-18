@@ -38,12 +38,12 @@ import CategoriesList from '@/components/categories/CategoriesList.vue';
 </template>
 
 <style scoped>  
-.footer {
-    width: 100%;
-    min-height: 200px;
-    margin-top: 100px;
-    background-color: var(--color-first-footer-background);
-}
+    .footer {
+        width: 100%;
+        min-height: 200px;
+        /* margin-top: 100px; */
+        background-color: var(--color-first-footer-background);
+    }
 
 .wrapper {
     padding: 50px 0;
@@ -56,11 +56,12 @@ import CategoriesList from '@/components/categories/CategoriesList.vue';
     height: 100%;
 }
 
-.footer h3 {
-    color: var(--color-first-footer-text);
-    font-size: 16px;
-    text-transform: uppercase;
-}
+    .footer h3 {
+        color: var(--color-first-footer-text);
+        font-size: 16px;
+        text-transform: uppercase;
+        text-align: left;
+    }
 
 .footer h3.center {
     text-align: center;
