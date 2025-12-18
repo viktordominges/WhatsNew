@@ -5,7 +5,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserOrganizersStore } from '@/stores/userOrganizersStore';
-import OrganizerForm from '@/components/OrganizerForm.vue';
+import OrganizerForm from '@/components/dashboard/organizers/OrganizerForm.vue'; // Исправить путь
 import SuccessModal from '@/components/dashboard/shared/SuccessModal.vue';
 
 const router = useRouter();
@@ -14,7 +14,6 @@ const showSuccess = ref(false);
 
 const handleSuccess = (data) => {
     showSuccess.value = true;
-    // После закрытия модалки переходим к списку
 };
 
 const closeSuccess = () => {

@@ -1,21 +1,5 @@
-
-<!-- frontend/src/components/header/SecondMenu.vue -->
 <script setup>
-<<<<<<< HEAD
 import CategoriesList from '@/components/categories/CategoriesList.vue';
-=======
-import { RouterLink } from 'vue-router';
-import { useEventsFilterStore } from '@/stores/eventsFilterStore';
-import { useHeaderStore } from '@/stores/headerStore';
-
-const filterStore = useEventsFilterStore();
-const headerStore = useHeaderStore();
-
-const selectCategory = (name) => {
-    filterStore.setCategory(name);
-    headerStore.setCategory(name);
-};
->>>>>>> feature/from-old-state
 
 const icons = import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' });
 const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
@@ -25,21 +9,15 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
     <div class="container">
         <nav class="second-menu">
             <RouterLink class="geo-map" to="/geo-map">
-                <img :src="getIcon('map-point')" alt="Geo Map Icon">
-<<<<<<< HEAD
-                <a href="#">Carte</a>
-            </div>
-=======
+                <img src="/src/assets/icons/menu-icons/map-point.svg" alt="Geo Map Icon">
                 Carte
             </RouterLink>
->>>>>>> feature/from-old-state
             <div class="calendar">
-                <img :src="getIcon('calendar')" alt="Calendar Icon">
+                <img src="/src/assets/icons/menu-icons/calendar.svg" alt="Calendar Icon">
                 <a href="#">Calendrier</a>
             </div>
             
-            <!-- Используем общий компонент -->
-            <CategoriesList variant="menu" :showIcons="true" />
+            <CategoriesList  />
             
             <div class="dots">
                 <a href="#">
@@ -72,7 +50,6 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
     color: var(--color-white);
 }
 
-<<<<<<< HEAD
 .geo-map, .calendar {
     margin-right: 25px;
     height: 100%;
@@ -87,22 +64,6 @@ const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`]
     background-color: var(--color-dark-background);
     transition: all 0.5s ease-in-out;
 }
-=======
-    .geo-map, .calendar {
-        margin-right: 25px;
-        height: 100%;
-        min-width: 150px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        border: 2px solid var(--color-white);
-        border-radius: 5px;
-        background-color: var(--color-dark-background);
-        transition: all 0.5s ease-in-out;
-    }
->>>>>>> feature/from-old-state
 
 .geo-map:hover, .calendar:hover {
     background-color: var(--color-black);

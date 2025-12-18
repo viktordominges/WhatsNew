@@ -5,7 +5,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserOrganizersStore } from '@/stores/userOrganizersStore';
-import OrganizerForm from '@/components/OrganizerForm.vue';
+import OrganizerForm from '@/components/dashboard/organizers/OrganizerForm.vue'; // Исправить путь
 import SuccessModal from '@/components/dashboard/shared/SuccessModal.vue';
 
 const route = useRoute();

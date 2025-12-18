@@ -1,17 +1,50 @@
-import data from '@/mock-data.json';
-// Хелперы для работы со slug
-export const getCategoryBySlug = (slug) => {
-    return data.categories.find(cat => cat.slug === slug);
-};
+let cachedCategories = null;
 
-export const getCategoryById = (id) => {
-    return data.categories.find(cat => cat.id === id);
-};
+async function loadCategories() {
+    if (cachedCategories) {
+        return cachedCategories;
+    }
 
-export const getCategoryName = (slug) => {
-    return getCategoryBySlug(slug)?.name || '';
-};
+    const response = await fetch('/mock-data.json');
 
-export const getCategoryId = (slug) => {
-    return getCategoryBySlug(slug)?.id || null;
-};
+    if (!response.ok) {
+        throw new Error('Failed to load mock-data.json');
+    }
+
+    const data = await response.json();
+
+    cachedCategories = data.categories || [];
+
+    console.log(cachedCategories);
+    
+
+    return cachedCategories;
+}
+
+// ==============================
+// Public API
+// ==============================
+
+export async function getAllCategories() {
+    return await loadCategories();
+}
+
+export async function getCategoryById(id) {
+    const categories = await loadCategories();
+    return categories.find(cat => cat.id === id) || null;
+}
+
+export async function getCategoryBySlug(slug) {
+    const categories = await loadCategories();
+    return categories.find(cat => cat.slug === slug) || null;
+}
+
+export async function getCategoryName(slug) {
+    const category = await getCategoryBySlug(slug);
+    return category?.name || '';
+}
+
+export async function getCategoryId(slug) {
+    const category = await getCategoryBySlug(slug);
+    return category?.id || null;
+}

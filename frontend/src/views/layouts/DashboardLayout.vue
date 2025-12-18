@@ -4,8 +4,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import DashboardSidebar from './DashboardSidebar.vue';
-import DashboardHeader from './DashboardHeader.vue';
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar.vue';
+import DashboardHeader from '@/components/dashboard/DashboardHeader.vue';
 
 const authStore = useAuthStore();
 const sidebarOpen = ref(true);
@@ -15,7 +15,6 @@ const toggleSidebar = () => {
 };
 
 onMounted(async () => {
-    // Проверяем авторизацию при загрузке
     if (!authStore.user) {
         await authStore.checkAuth();
     }
@@ -36,7 +35,7 @@ onMounted(async () => {
             />
             
             <main class="dashboard-content">
-                <slot />
+                <RouterView />
             </main>
         </div>
     </div>

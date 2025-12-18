@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import { useDashboardStore } from '@/stores/dashboardStore';
 import { useAuthStore } from '@/stores/authStore';
 import StatsCard from '@/components/dashboard/shared/StatsCard.vue';
+import StatusBadge from '@/components/dashboard/shared/StatusBadge.vue'; // Добавить
 
 const router = useRouter();
 const dashboardStore = useDashboardStore();

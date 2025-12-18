@@ -1,7 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 import MainLayout from '../views/layouts/MainLayout.vue'
 import AuthLayout from '../views/layouts/AuthLayout.vue'
 import DashboardLayout from '../views/layouts/DashboardLayout.vue'
+
+/**
+ * Navigation guard для защищенных маршрутов
+ */
+const requireAuth = async (to, from, next) => {
+    const authStore = useAuthStore();
+    
+    if (!authStore.isLoggedIn) {
+        await authStore.checkAuth();
+    }
+
+    if (authStore.isLoggedIn) {
+        next();
+    } else {
+        next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+        });
+    }
+};
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,21 +38,25 @@ const router = createRouter({
                     path: '',
                     name: 'home',
                     component: () => import('../views/HomeView.vue'),
+                    meta: { title: 'Tous les événements' }
                 },
                 {
                     path: 'about',
                     name: 'about',
                     component: () => import('../views/AboutView.vue'),
+                    meta: { title: 'À propos du site' }
                 },
                 {
                     path: 'archives',
                     name: 'archives',
                     component: () => import('../views/ArchivesView.vue'),
+                    meta: { title: 'Archives des événements' }
                 },
                 {
                     path: 'geo-map',
                     name: 'geo-map',
                     component: () => import('../views/GeoMapView.vue'),
+                    meta: { title: 'Carte géographique' }
                 },
             ],
         },
@@ -46,22 +71,14 @@ const router = createRouter({
                     path: 'login',
                     name: 'login',
                     component: () => import('../views/authViews/LoginView.vue'),
+                    meta: { title: 'Se connecter' }
                 },
                 {
                     path: 'register',
                     name: 'register',
                     component: () => import('../views/authViews/RegisterView.vue'),
+                    meta: { title: "S'enregistrer" }
                 },
-                // {
-                //     path: 'profile',
-                //     name: 'profile',
-                //     component: () => import('../views/dashboardViews/ProfileView.vue'),
-                // },
-                // {
-                //     path: 'add-activity',
-                //     name: 'add-activity',
-                //     component: () => import('../views/dashboardViews/AddActivityView.vue'),
-                // },
             ],
         },
         // ============================================================
@@ -70,47 +87,61 @@ const router = createRouter({
         {
             path: '/dashboard',
             component: DashboardLayout,
-            meta: { requiresAuth: true },
+            beforeEnter: requireAuth,
             children: [
                 {
                     path: '',
                     name: 'dashboard',
-                    component: () => import('../views/DashboardView.vue'),
+                    component: () => import('../views/dashboardViews/DashboardView.vue'),
+                    meta: { title: 'Tableau de bord' }
                 },
                 {
-                    path: 'account',
-                    name: 'dashboard-account',
-                    component: () => import('../views/AccountSettingsView.vue'),
+                    path: 'settings',
+                    name: 'dashboard-settings',
+                    component: () => import('../views/dashboardViews/AccountSettingsView.vue'),
+                    meta: { title: 'Paramètres du compte' }
                 },
                 {
                     path: 'organizers',
                     name: 'dashboard-organizers',
-                    component: () => import('../views/MyOrganizersView.vue'),
+                    component: () => import('../views/dashboardViews/MyOrganizersView.vue'),
+                    meta: { title: 'Mes organisateurs' }
                 },
                 {
                     path: 'organizers/create',
                     name: 'dashboard-organizers-create',
-                    component: () => import('../views/CreateOrganizerView.vue'),
+                    component: () => import('../views/dashboardViews/CreateOrganizerView.vue'),
+                    meta: { title: 'Créer un organisateur' }
                 },
                 {
                     path: 'organizers/:slug/edit',
                     name: 'dashboard-organizers-edit',
-                    component: () => import('../views/EditOrganizerView.vue'),
+                    component: () => import('../views/dashboardViews/EditOrganizerView.vue'),
+                    meta: { title: "Modifier l'organisateur" }
                 },
                 {
-                    path: 'organizers/:slug/events',
-                    name: 'dashboard-organizer-events',
-                    component: () => import('../views/OrganizerEventsView.vue'),
+                    path: 'organizers/:slug/activities',
+                    name: 'dashboard-organizer-activities',
+                    component: () => import('../views/dashboardViews/OrganizerEventsView.vue'),
+                    meta: { title: "Événements de l'organisateur" }
                 },
                 {
-                    path: 'organizers/:organizerSlug/events/create',
-                    name: 'dashboard-events-create',
-                    component: () => import('../views/CreateEventView.vue'),
+                    path: 'activities',
+                    name: 'dashboard-activities',
+                    component: () => import('../views/dashboardViews/ActivitiesListView.vue'),
+                    meta: { title: 'Mes événements' }
                 },
                 {
-                    path: 'organizers/:organizerSlug/events/:eventSlug/edit',
-                    name: 'dashboard-events-edit',
-                    component: () => import('../views/EditEventView.vue'),
+                    path: 'activities/create',
+                    name: 'dashboard-activities-create',
+                    component: () => import('../views/dashboardViews/CreateActivityView.vue'),
+                    meta: { title: 'Créer un événement' }
+                },
+                {
+                    path: 'activities/:slug/edit',
+                    name: 'dashboard-activities-edit',
+                    component: () => import('../views/dashboardViews/EditActivityView.vue'),
+                    meta: { title: "Modifier l'événement" }
                 }
             ]
         },
@@ -119,198 +150,28 @@ const router = createRouter({
         // ============================================================
         {
             path: '/:pathMatch(.*)*',
-            children: [
-                {
-                    path: '',
-                    name: 'not-found',
-                    component: () => import('../views/NotFoundView.vue'),
-                }
-            ]
+            name: 'not-found',
+            component: () => import('../views/NotFoundView.vue'),
+            meta: { title: 'Page non trouvée' }
         }
-
     ],
+    
+    // Поведение прокрутки
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return { top: 0 };
+        }
+    }
 })
 
-export default router
-
-
-
-// ============================================================================
-// frontend/src/router/dashboard.js
-// ============================================================================
-
-import { useAuthStore } from '@/stores/authStore';
-
-// Layout
-const DashboardLayout = () => import('@/components/dashboard/DashboardLayout.vue');
-
-// Views
-const DashboardView = () => import('@/views/dashboard/DashboardView.vue');
-const AccountSettingsView = () => import('@/views/dashboard/AccountSettingsView.vue');
-const MyOrganizersView = () => import('@/views/dashboard/MyOrganizersView.vue');
-const CreateOrganizerView = () => import('@/views/dashboard/CreateOrganizerView.vue');
-const EditOrganizerView = () => import('@/views/dashboard/EditOrganizerView.vue');
-const OrganizerEventsView = () => import('@/views/dashboard/OrganizerEventsView.vue');
-const CreateEventView = () => import('@/views/dashboard/CreateEventView.vue');
-const EditEventView = () => import('@/views/dashboard/EditEventView.vue');
-
-/**
- * Проверка авторизации
- */
-const requireAuth = async (to, from, next) => {
-    const authStore = useAuthStore();
-    
-    // Проверяем авторизацию
-    if (!authStore.isLoggedIn) {
-        await authStore.checkAuth();
-    }
-
-    if (authStore.isLoggedIn) {
-        next();
-    } else {
-        next({
-            path: '/login',
-            query: { redirect: to.fullPath }
-        });
-    }
-};
-
-export const dashboardRoutes = [
-    {
-        path: '/dashboard',
-        component: DashboardLayout,
-        beforeEnter: requireAuth,
-        children: [
-            {
-                path: '',
-                name: 'dashboard',
-                component: DashboardView,
-                meta: {
-                    title: 'Личный кабинет'
-                }
-            },
-            {
-                path: 'settings',
-                name: 'dashboard-settings',
-                component: AccountSettingsView,
-                meta: {
-                    title: 'Настройки аккаунта'
-                }
-            },
-            {
-                path: 'organizers',
-                name: 'dashboard-organizers',
-                component: MyOrganizersView,
-                meta: {
-                    title: 'Мои организаторы'
-                }
-            },
-            {
-                path: 'organizers/create',
-                name: 'dashboard-organizers-create',
-                component: CreateOrganizerView,
-                meta: {
-                    title: 'Создать организатора'
-                }
-            },
-            {
-                path: 'organizers/:slug/edit',
-                name: 'dashboard-organizers-edit',
-                component: EditOrganizerView,
-                meta: {
-                    title: 'Редактировать организатора'
-                }
-            },
-            {
-                path: 'organizers/:slug/events',
-                name: 'dashboard-organizer-events',
-                component: OrganizerEventsView,
-                meta: {
-                    title: 'События организатора'
-                }
-            },
-            {
-                path: 'events/create',
-                name: 'dashboard-events-create',
-                component: CreateEventView,
-                meta: {
-                    title: 'Создать событие'
-                }
-            },
-            {
-                path: 'events/:slug/edit',
-                name: 'dashboard-events-edit',
-                component: EditEventView,
-                meta: {
-                    title: 'Редактировать событие'
-                }
-            }
-        ]
-    }
-];
-
-// ============================================================================
-// Интеграция в main router
-// frontend/src/router/index.js
-// ============================================================================
-
-/*
-import { createRouter, createWebHistory } from 'vue-router'
-import { dashboardRoutes } from './dashboard'
-import HomeView from '../views/HomeView.vue'
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-    },
-    {
-      path: '/archives',
-      name: 'archives',
-      component: () => import('../views/ArchivesView.vue'),
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue'),
-    },
-    
-    // Dashboard routes
-    ...dashboardRoutes,
-    
-    // Category route
-    {
-      path: '/category/:slug',
-      name: 'category',
-      component: HomeView,
-    },
-  ],
-  
-  // Scroll behavior
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { top: 0 };
-    }
-  }
-})
-
-// Global navigation guard for page titles
+// Global navigation guard для заголовков страниц
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title 
-    ? `${to.meta.title} | Quoi de neuf` 
-    : 'Quoi de neuf';
-  next();
+    document.title = to.meta.title 
+        ? `${to.meta.title} | Quoi de neuf` 
+        : 'Quoi de neuf';
+    next();
 });
 
 export default router
-*/

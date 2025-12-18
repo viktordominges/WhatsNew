@@ -4,37 +4,37 @@
             "id": 1,
             "name": "Concerts",
             "slug": "concerts",
-            "image": "/images/categories/concerts.jpg"
+            "image": "src/assets/icons/categories/concert.svg"
         },
         {
             "id": 2,
             "name": "Festivals",
             "slug": "festivals",
-            "image": "/images/categories/festivals.jpg"
+            "image": "src/assets/icons/categories/fest.svg"
         },
         {
             "id": 3,
             "name": "Enfants",
             "slug": "enfants",
-            "image": "/images/categories/enfants.jpg"
+            "image": "src/assets/icons/categories/teddy.svg"
         },
         {
             "id": 4,
             "name": "Théâtre",
             "slug": "theatre",
-            "image": "/images/categories/theatre.jpg"
+            "image": "src/assets/icons/categories/theatre.svg"
         },
         {
             "id": 5,
             "name": "Expositions",
             "slug": "expositions",
-            "image": "/images/categories/expositions.jpg"
+            "image": "src/assets/icons/categories/expo.svg"
         },
         {
             "id": 6,
             "name": "Cinéma",
             "slug": "cinema",
-            "image": "/images/categories/cinema.jpg"
+            "image": "src/assets/icons/categories/cinema.svg"
         }
     ],
     "activities": [

@@ -1,71 +1,59 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import { useEventsFilterStore } from '@/stores/eventsFilterStore';
-import { useHeaderStore } from '@/stores/headerStore';
-import data from '@/mock-data.json';
+import { ref, computed } from 'vue'
+import { useCategoryStore } from '@/stores/categoriesStore.js'
 
+/**
+ * props
+ */
 const props = defineProps({
     variant: {
         type: String,
-        default: 'menu',
-        validator: (value) => ['menu', 'footer', 'grid'].includes(value)
-    },
-    showIcons: {
-        type: Boolean,
-        default: false
-    },
-    // Опция для использования роутинга вместо прямого изменения store
-    useRouting: {
-        type: Boolean,
-        default: false
+        default: 'menu', // menu | footer | grid
     }
-});
+})
 
-const router = useRouter();
-const filterStore = useEventsFilterStore();
-const headerStore = useHeaderStore();
+/**
+ * store
+ */
+const store = useCategoryStore()
+const categories = computed(() => store.items)
 
-const selectCategory = (slug) => {
-    if (props.useRouting) {
-        // Переход на URL с slug
-        router.push(`/category/${slug}`);
-    } else {
-        // Прямое обновление store (для текущей реализации)
-        filterStore.setCategoryBySlug(slug);
-        headerStore.setCategoryBySlug(slug);
-    }
-};
+/**
+ * active state (локально)
+ * при необходимости можно вынести в store или v-model
+ */
+const activeCategory = ref(null)
 
-// Динамическая загрузка иконок
-const icons = props.showIcons 
-    ? import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' })
-    : {};
-    
-const getIcon = (name) => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
+function selectCategory(slug) {
+    activeCategory.value = slug
+}
+
+// console.log(category.image);
+
 </script>
 
 <template>
-    <ul 
-        :class="[
-            'categories-list',
-            `categories-list--${variant}`
-        ]"
+    <ul
+        class="categories-list"
+        :class="`categories-list--${variant}`"
     >
-        <li 
-            v-for="category in data.categories" 
+        <li
+            v-for="category in categories"
             :key="category.slug"
             @click="selectCategory(category.slug)"
-            :class="{ 'active': filterStore.categorySlug === category.slug }"
+            :class="{ active: activeCategory === category.slug }"
         >
-            <img 
-                v-if="showIcons && getIcon(category.icon)" 
-                :src="getIcon(category.icon)" 
-                :alt="`${category.name} Icon`"
-            >
+            <img
+                v-if="variant === 'menu'"
+                :src="category.image"
+                :alt="category.name"
+            />
+
             <a>{{ category.name }}</a>
         </li>
     </ul>
 </template>
+
 
 <style scoped>
 .categories-list {
