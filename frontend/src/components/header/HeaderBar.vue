@@ -18,7 +18,7 @@ import userIcon from '@/assets/icons/user-icon.svg';
                 />
 
                 <nav>
-                    <RouterLink class="btn blue-transparent-btn" to="/add-activity">Ajouter un événement</RouterLink>
+                    <RouterLink class="btn blue-transparent-btn" to="/profile">Ajouter un événement</RouterLink>
                     <RouterLink class="btn orange-btn" to="/login">
                         <img :src="userIcon" alt="User Icon">
                         Entrée

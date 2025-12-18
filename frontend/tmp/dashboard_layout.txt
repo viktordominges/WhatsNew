@@ -1,0 +1,485 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+
+const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
+
+const isSidebarOpen = ref(true);
+const isMobileMenuOpen = ref(false);
+
+const user = computed(() => authStore.user);
+
+// Навигационные элементы
+const navItems = [
+    {
+        name: 'Обзор',
+        path: '/dashboard',
+        icon: 'home'
+    },
+    {
+        name: 'Мой аккаунт',
+        path: '/dashboard/account',
+        icon: 'user'
+    },
+    {
+        name: 'Мои организаторы',
+        path: '/dashboard/organizers',
+        icon: 'building'
+    }
+];
+
+// Проверка активного пункта меню
+const isActive = (path) => {
+    if (path === '/dashboard') {
+        return route.path === path;
+    }
+    return route.path.startsWith(path);
+};
+
+// Логаут
+const handleLogout = async () => {
+    await authStore.logout();
+    router.push('/');
+};
+
+// Переключение sidebar
+const toggleSidebar = () => {
+    isSidebarOpen.value = !isSidebarOpen.value;
+};
+
+// Переключение мобильного меню
+const toggleMobileMenu = () => {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+// Закрыть мобильное меню при переходе
+const closeMobileMenu = () => {
+    isMobileMenuOpen.value = false;
+};
+
+onMounted(() => {
+    // Проверяем авторизацию
+    if (!authStore.isLoggedIn) {
+        router.push('/login');
+    }
+});
+</script>
+
+<template>
+    <div class="dashboard-layout">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button class="menu-toggle" @click="toggleMobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1 class="logo">Личный кабинет</h1>
+            <div class="mobile-user">
+                <span>{{ user?.username }}</span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside 
+            class="sidebar" 
+            :class="{ 
+                'sidebar-open': isSidebarOpen,
+                'mobile-sidebar-open': isMobileMenuOpen 
+            }"
+        >
+            <!-- Logo / Header -->
+            <div class="sidebar-header">
+                <router-link to="/" class="sidebar-logo">
+                    <h2>Quoi de neuf</h2>
+                </router-link>
+            </div>
+
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ user?.username?.[0]?.toUpperCase() }}
+                </div>
+                <div class="user-details">
+                    <h3>{{ user?.username }}</h3>
+                    <p>{{ user?.email }}</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li v-for="item in navItems" :key="item.path">
+                        <router-link 
+                            :to="item.path"
+                            :class="{ 'active': isActive(item.path) }"
+                            @click="closeMobileMenu"
+                        >
+                            <span class="nav-icon" :data-icon="item.icon"></span>
+                            <span class="nav-text">{{ item.name }}</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Logout -->
+            <div class="sidebar-footer">
+                <button class="logout-btn" @click="handleLogout">
+                    <span class="nav-icon" data-icon="logout"></span>
+                    <span>Выйти</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay для мобильного меню -->
+        <div 
+            v-if="isMobileMenuOpen" 
+            class="overlay"
+            @click="closeMobileMenu"
+        ></div>
+
+        <!-- Main Content -->
+        <main class="dashboard-main" :class="{ 'sidebar-collapsed': !isSidebarOpen }">
+            <!-- Desktop Toggle -->
+            <button class="sidebar-toggle desktop-only" @click="toggleSidebar">
+                <span>{{ isSidebarOpen ? '◀' : '▶' }}</span>
+            </button>
+
+            <!-- Page Content -->
+            <div class="dashboard-content">
+                <router-view />
+            </div>
+        </main>
+    </div>
+</template>
+
+<style scoped>
+/* ============================================================================
+   LAYOUT
+   ============================================================================ */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-light-background);
+}
+
+/* ============================================================================
+   MOBILE HEADER
+   ============================================================================ */
+
+.mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--color-white);
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 20px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background-color: var(--color-dark-text);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.mobile-header .logo {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-text);
+}
+
+.mobile-user span {
+    font-size: var(--font-size-xxs);
+    color: var(--color-gray-light);
+}
+
+/* ============================================================================
+   SIDEBAR
+   ============================================================================ */
+
+.sidebar {
+    width: 280px;
+    background-color: var(--color-white);
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transition: transform 0.3s ease;
+    z-index: 200;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-logo h2 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-blue);
+    text-transform: uppercase;
+}
+
+/* User Info */
+.user-info {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-green) 100%);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+}
+
+.user-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-details h3 {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-dark-text);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-details p {
+    font-size: var(--font-size-xxs);
+    color: var(--color-gray-light);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Navigation */
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin: 0;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    color: var(--color-dark-text);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav a:hover {
+    background-color: var(--color-light-card-background);
+}
+
+.sidebar-nav a.active {
+    background-color: var(--color-light-card-background);
+    color: var(--color-blue);
+    border-right: 3px solid var(--color-blue);
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-icon::before {
+    content: '📊';
+}
+
+.nav-icon[data-icon="home"]::before { content: '🏠'; }
+.nav-icon[data-icon="user"]::before { content: '👤'; }
+.nav-icon[data-icon="building"]::before { content: '🏢'; }
+.nav-icon[data-icon="logout"]::before { content: '🚪'; }
+
+/* Footer */
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: transparent;
+    border: 2px solid var(--color-error);
+    border-radius: var(--btn-border-radius);
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: var(--color-error);
+    color: var(--color-white);
+}
+
+/* ============================================================================
+   MAIN CONTENT
+   ============================================================================ */
+
+.dashboard-main {
+    flex: 1;
+    margin-left: 280px;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar-toggle {
+    position: fixed;
+    left: 280px;
+    top: 20px;
+    width: 36px;
+    height: 36px;
+    background-color: var(--color-white);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 50;
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--color-light-card-background);
+}
+
+.dashboard-content {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ============================================================================
+   OVERLAY
+   ============================================================================ */
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 150;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 1024px) {
+    .dashboard-main {
+        margin-left: 0;
+    }
+
+    .sidebar-toggle {
+        display: none;
+    }
+
+    .mobile-header {
+        display: flex;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-sidebar-open {
+        transform: translateX(0);
+    }
+
+    .overlay {
+        display: block;
+    }
+
+    .dashboard-content {
+        padding: 20px;
+        padding-top: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .dashboard-content {
+        padding: 15px;
+        padding-top: 75px;
+    }
+}
+
+.desktop-only {
+    display: block;
+}
+
+@media (max-width: 1024px) {
+    .desktop-only {
+        display: none;
+    }
+}
+</style>
