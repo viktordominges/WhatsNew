@@ -1,7 +1,7 @@
 # apps/main/models.py
 
-from django.contrib.gis.db import models as gis_models
-from django.contrib.gis.geos import Point
+# from django.contrib.gis.db import models as gis_models
+# from django.contrib.gis.geos import Point
 
 from django.db import models
 from django.conf import settings
@@ -17,7 +17,7 @@ class Category(models.Model):
     """Category for activities"""
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    image = models.FileField(upload_to='categories/', blank=True, null=True)  # <--- FileField
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -220,105 +220,105 @@ class Activity(models.Model):
 
 
 
-class ActivityAddress(gis_models.Model):
-    """
-    Single address and location for activity.
-    One-to-one relationship with Activity.
-    """
-    activity = gis_models.OneToOneField(
-        Activity,
-        on_delete=gis_models.CASCADE,
-        related_name='address',
-        primary_key=True
-    )
+# class ActivityAddress(gis_models.Model):
+#     """
+#     Single address and location for activity.
+#     One-to-one relationship with Activity.
+#     """
+#     activity = gis_models.OneToOneField(
+#         Activity,
+#         on_delete=gis_models.CASCADE,
+#         related_name='address',
+#         primary_key=True
+#     )
     
-    # Address fields
-    place_name = gis_models.CharField(
-        max_length=200,
-        blank=True,
-        help_text='Venue name'
-    )
-    address = gis_models.CharField(max_length=300)
-    city = gis_models.CharField(max_length=100, blank=True)
-    postcode = gis_models.CharField(max_length=20, blank=True)
-    country = gis_models.CharField(max_length=100, default='Belgium')
+#     # Address fields
+#     place_name = gis_models.CharField(
+#         max_length=200,
+#         blank=True,
+#         help_text='Venue name'
+#     )
+#     address = gis_models.CharField(max_length=300)
+#     city = gis_models.CharField(max_length=100, blank=True)
+#     postcode = gis_models.CharField(max_length=20, blank=True)
+#     country = gis_models.CharField(max_length=100, default='Belgium')
     
-    # Geographic coordinates
-    location = gis_models.PointField(
-        geography=True,
-        null=True,
-        blank=True,
-        help_text='Geographic point (longitude, latitude)'
-    )
+#     # Geographic coordinates
+#     location = gis_models.PointField(
+#         geography=True,
+#         null=True,
+#         blank=True,
+#         help_text='Geographic point (longitude, latitude)'
+#     )
     
-    # Metadata
-    created_at = gis_models.DateTimeField(auto_now_add=True)
-    updated_at = gis_models.DateTimeField(auto_now=True)
+#     # Metadata
+#     created_at = gis_models.DateTimeField(auto_now_add=True)
+#     updated_at = gis_models.DateTimeField(auto_now=True)
     
-    class Meta:
-        db_table = 'activity_addresses'
-        verbose_name = 'Activity Address'
-        verbose_name_plural = 'Activity Addresses'
+#     class Meta:
+#         db_table = 'activity_addresses'
+#         verbose_name = 'Activity Address'
+#         verbose_name_plural = 'Activity Addresses'
     
-    def __str__(self):
-        parts = [p for p in [
-            self.place_name,
-            self.address,
-            self.city,
-            self.postcode,
-            self.country
-        ] if p]
-        return ', '.join(parts) if parts else 'No address'
+#     def __str__(self):
+#         parts = [p for p in [
+#             self.place_name,
+#             self.address,
+#             self.city,
+#             self.postcode,
+#             self.country
+#         ] if p]
+#         return ', '.join(parts) if parts else 'No address'
     
-    def clean(self):
-        """Validation: must have address or coordinates"""
-        super().clean()
-        if not self.address and not self.location:
-            raise ValidationError(
-                'Either address or location coordinates must be provided.'
-            )
+#     def clean(self):
+#         """Validation: must have address or coordinates"""
+#         super().clean()
+#         if not self.address and not self.location:
+#             raise ValidationError(
+#                 'Either address or location coordinates must be provided.'
+#             )
     
-    # ✅ ДОБАВЛЕНО: Вызываем валидацию перед сохранением
-    def save(self, *args, **kwargs):
-        """Save with validation"""
-        if not kwargs.pop('skip_validation', False):
-            self.full_clean()
-        super().save(*args, **kwargs)
+#     # ✅ ДОБАВЛЕНО: Вызываем валидацию перед сохранением
+#     def save(self, *args, **kwargs):
+#         """Save with validation"""
+#         if not kwargs.pop('skip_validation', False):
+#             self.full_clean()
+#         super().save(*args, **kwargs)
     
-    @property
-    def latitude(self):
-        """Get latitude from PointField"""
-        return self.location.y if self.location else None
+#     @property
+#     def latitude(self):
+#         """Get latitude from PointField"""
+#         return self.location.y if self.location else None
     
-    @property
-    def longitude(self):
-        """Get longitude from PointField"""
-        return self.location.x if self.location else None
+#     @property
+#     def longitude(self):
+#         """Get longitude from PointField"""
+#         return self.location.x if self.location else None
     
-    @property
-    def coordinates(self):
-        """Get coordinates as [lng, lat] for frontend"""
-        if self.location:
-            return [self.location.x, self.location.y]
-        return None
+#     @property
+#     def coordinates(self):
+#         """Get coordinates as [lng, lat] for frontend"""
+#         if self.location:
+#             return [self.location.x, self.location.y]
+#         return None
     
-    def set_coordinates(self, longitude, latitude):
-        """
-        Set coordinates from separate values.
+#     def set_coordinates(self, longitude, latitude):
+#         """
+#         Set coordinates from separate values.
         
-        Args:
-            longitude (float): Longitude (-180 to 180)
-            latitude (float): Latitude (-90 to 90)
+#         Args:
+#             longitude (float): Longitude (-180 to 180)
+#             latitude (float): Latitude (-90 to 90)
         
-        Raises:
-            ValueError: If coordinates are out of range
-        """
-        if not (-180 <= longitude <= 180):
-            raise ValueError('Longitude must be between -180 and 180')
-        if not (-90 <= latitude <= 90):
-            raise ValueError('Latitude must be between -90 and 90')
+#         Raises:
+#             ValueError: If coordinates are out of range
+#         """
+#         if not (-180 <= longitude <= 180):
+#             raise ValueError('Longitude must be between -180 and 180')
+#         if not (-90 <= latitude <= 90):
+#             raise ValueError('Latitude must be between -90 and 90')
         
-        self.location = Point(longitude, latitude, srid=4326)
+#         self.location = Point(longitude, latitude, srid=4326)
         
         
 class Comment(models.Model):

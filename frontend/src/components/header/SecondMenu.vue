@@ -1,8 +1,5 @@
 <script setup>
 import CategoriesList from '@/components/categories/CategoriesList.vue';
-
-const icons = import.meta.glob('@/assets/icons/second-menu-icons/*.svg', { eager: true, import: 'default' });
-const getIcon = name => icons[`/src/assets/icons/second-menu-icons/${name}.svg`];
 </script>
 
 <template>

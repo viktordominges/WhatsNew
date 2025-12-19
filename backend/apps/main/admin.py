@@ -1,51 +1,51 @@
 # apps/main/admin.py
 
 from django.contrib import admin
-from django.contrib.gis.admin import GISModelAdmin
+# from django.contrib.gis.admin import GISModelAdmin
 from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from .models import Category, Organizer, Activity, ActivityAddress, Comment
-
+from .models import Category, Organizer, Activity, Comment
+# from .models import ActivityAddress
 
 # ============================================================================
 # INLINE ADMINS
 # ============================================================================
 
-class ActivityAddressInline(admin.StackedInline):
-    """Inline for activity address"""
-    model = ActivityAddress
-    extra = 0
-    fields = [
-        'place_name', 'address', 'city', 'postcode', 'country',
-        'location'
-    ]
+# class ActivityAddressInline(admin.StackedInline):
+#     """Inline for activity address"""
+#     model = ActivityAddress
+#     extra = 0
+#     fields = [
+#         'place_name', 'address', 'city', 'postcode', 'country',
+#         'location'
+#     ]
     
-    def has_delete_permission(self, request, obj=None):
-        """Allow deletion only for staff/superusers"""
-        return request.user.is_staff or request.user.is_superuser
+#     def has_delete_permission(self, request, obj=None):
+#         """Allow deletion only for staff/superusers"""
+#         return request.user.is_staff or request.user.is_superuser
     
-    def has_change_permission(self, request, obj=None):
-        """Allow changes only for staff/superusers or activity author"""
-        if request.user.is_staff or request.user.is_superuser:
-            return True
+#     def has_change_permission(self, request, obj=None):
+#         """Allow changes only for staff/superusers or activity author"""
+#         if request.user.is_staff or request.user.is_superuser:
+#             return True
         
-        # Check if user is activity author
-        if obj and hasattr(obj, 'activity'):
-            return obj.activity.author == request.user
+#         # Check if user is activity author
+#         if obj and hasattr(obj, 'activity'):
+#             return obj.activity.author == request.user
         
-        return False
+#         return False
     
-    def has_add_permission(self, request, obj=None):
-        """Allow adding only for staff/superusers or when creating activity"""
-        if request.user.is_staff or request.user.is_superuser:
-            return True
+#     def has_add_permission(self, request, obj=None):
+#         """Allow adding only for staff/superusers or when creating activity"""
+#         if request.user.is_staff or request.user.is_superuser:
+#             return True
         
-        # Allow when creating new activity
-        if obj is None:
-            return True
+#         # Allow when creating new activity
+#         if obj is None:
+#             return True
         
-        return False
+#         return False
 
 
 class CommentInline(admin.TabularInline):
@@ -78,7 +78,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'image_preview', 'activities_count', 'created_at']
     list_filter = ['created_at']
     search_fields = ['name', 'slug']
-    prepopulated_fields = {'slug': ('name',)}
+    # prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ['slug', 'created_at', 'image_preview']
     
     fieldsets = [
@@ -172,7 +172,7 @@ class ActivityAdmin(admin.ModelAdmin):
         'created_at', 'updated_at', 'poster_preview'
     ]
     date_hierarchy = 'date'
-    inlines = [ActivityAddressInline, CommentInline]
+    # inlines = [ActivityAddressInline, CommentInline]
     
     fieldsets = [
         ('Basic Info', {
@@ -257,48 +257,48 @@ class ActivityAdmin(admin.ModelAdmin):
 # ACTIVITY ADDRESS ADMIN
 # ============================================================================
 
-@admin.register(ActivityAddress)
-class ActivityAddressAdmin(GISModelAdmin):
-    """Admin for ActivityAddress model with map"""
-    list_display = ['activity', 'address', 'city', 'postcode', 'country', 'has_coordinates']
-    list_filter = ['country', 'city']
-    search_fields = ['place_name', 'address', 'city', 'activity__name']
-    readonly_fields = ['created_at', 'updated_at', 'coordinates_display']
+# @admin.register(ActivityAddress)
+# class ActivityAddressAdmin(GISModelAdmin):
+#     """Admin for ActivityAddress model with map"""
+#     list_display = ['activity', 'address', 'city', 'postcode', 'country', 'has_coordinates']
+#     list_filter = ['country', 'city']
+#     search_fields = ['place_name', 'address', 'city', 'activity__name']
+#     readonly_fields = ['created_at', 'updated_at', 'coordinates_display']
     
-    fieldsets = [
-        ('Activity', {
-            'fields': ['activity']
-        }),
-        ('Address', {
-            'fields': ['place_name', 'address', 'city', 'postcode', 'country']
-        }),
-        ('Location', {
-            'fields': ['location', 'coordinates_display']
-        }),
-        ('Metadata', {
-            'fields': ['created_at', 'updated_at'],
-            'classes': ['collapse']
-        })
-    ]
+#     fieldsets = [
+#         ('Activity', {
+#             'fields': ['activity']
+#         }),
+#         ('Address', {
+#             'fields': ['place_name', 'address', 'city', 'postcode', 'country']
+#         }),
+#         ('Location', {
+#             'fields': ['location', 'coordinates_display']
+#         }),
+#         ('Metadata', {
+#             'fields': ['created_at', 'updated_at'],
+#             'classes': ['collapse']
+#         })
+#     ]
      
-    # GIS settings
-    default_lon = 4.3517  # Brussels longitude
-    default_lat = 50.8503  # Brussels latitude
-    default_zoom = 10
+#     # GIS settings
+#     default_lon = 4.3517  # Brussels longitude
+#     default_lat = 50.8503  # Brussels latitude
+#     default_zoom = 10
     
-    def has_coordinates(self, obj):
-        """Check if coordinates are set"""
-        if obj.location:
-            return format_html('<span style="color: green;">✓</span>')
-        return format_html('<span style="color: red;">✗</span>')
-    has_coordinates.short_description = 'Has Coords'
+#     def has_coordinates(self, obj):
+#         """Check if coordinates are set"""
+#         if obj.location:
+#             return format_html('<span style="color: green;">✓</span>')
+#         return format_html('<span style="color: red;">✗</span>')
+#     has_coordinates.short_description = 'Has Coords'
     
-    def coordinates_display(self, obj):
-        """Display coordinates in readable format"""
-        if obj.location:
-            return f'Lat: {obj.latitude:.6f}, Lon: {obj.longitude:.6f}'
-        return '-'
-    coordinates_display.short_description = 'Coordinates'
+#     def coordinates_display(self, obj):
+#         """Display coordinates in readable format"""
+#         if obj.location:
+#             return f'Lat: {obj.latitude:.6f}, Lon: {obj.longitude:.6f}'
+#         return '-'
+#     coordinates_display.short_description = 'Coordinates'
 
 
 # ============================================================================

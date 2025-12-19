@@ -1,7 +1,7 @@
 // frontend/src/stores/activitiesStore.js
 
 import { defineStore } from 'pinia';
-import { activitiesAPI } from '@/services/api';
+import { activitiesAPI } from '@/services/http';
 
 export const useActivitiesStore = defineStore('activities', {
     state: () => ({
@@ -227,7 +227,7 @@ export const useActivitiesStore = defineStore('activities', {
 // frontend/src/stores/categoriesStore.js
 
 import { defineStore } from 'pinia';
-import { categoriesAPI } from '@/services/api';
+import { categoriesAPI } from '@/services/http';
 
 export const useCategoriesStore = defineStore('categories', {
     state: () => ({
@@ -309,7 +309,7 @@ export const useCategoriesStore = defineStore('categories', {
 // frontend/src/stores/authStore.js
 
 import { defineStore } from 'pinia';
-import { authAPI, saveTokens, clearTokens, isAuthenticated } from '@/services/api';
+import { authAPI, saveTokens, clearTokens, isAuthenticated } from '@/services/http';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -438,7 +438,7 @@ export const useAuthStore = defineStore('auth', {
 // frontend/src/stores/commentsStore.js
 
 import { defineStore } from 'pinia';
-import { activitiesAPI, commentsAPI } from '@/services/api';
+import { activitiesAPI, commentsAPI } from '@/services/http';
 
 export const useCommentsStore = defineStore('comments', {
     state: () => ({

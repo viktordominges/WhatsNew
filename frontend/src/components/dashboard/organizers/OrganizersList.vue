@@ -5,7 +5,7 @@
 import { ref, onMounted } from 'vue';
 import OrganizerCard from './OrganizerCard.vue';
 import EmptyOrganizers from './EmptyOrganizers.vue';
-import { organizersAPI } from '@/services/api';
+import { organizersAPI } from '@/services/http';
 
 const organizers = ref([]);
 const loading = ref(true);

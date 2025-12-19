@@ -1,10 +1,11 @@
 # apps/main/serializers.py
 
-from backend.apps.validators import validate_image_file
+from apps.validators import validate_image_file
 from rest_framework import serializers
 from django.utils import timezone
 from django.db import transaction
-from .models import Category, Organizer, Activity, Comment, ActivityAddress
+from .models import Category, Organizer, Activity, Comment
+# from .models import ActivityAddress
 
 
 # ============================================================================
@@ -83,87 +84,87 @@ class OrganizerSerializer(serializers.ModelSerializer):
 # ACTIVITY ADDRESS SERIALIZERS
 # ============================================================================
 
-class ActivityAddressSerializer(serializers.ModelSerializer):
-    """Address serializer with coordinates"""
-    coordinates = serializers.ListField(
-        child=serializers.FloatField(),
-        read_only=True,
-        help_text="[longitude, latitude]"
-    )
-    latitude = serializers.FloatField(read_only=True)
-    longitude = serializers.FloatField(read_only=True)
+# class ActivityAddressSerializer(serializers.ModelSerializer):
+#     """Address serializer with coordinates"""
+#     coordinates = serializers.ListField(
+#         child=serializers.FloatField(),
+#         read_only=True,
+#         help_text="[longitude, latitude]"
+#     )
+#     latitude = serializers.FloatField(read_only=True)
+#     longitude = serializers.FloatField(read_only=True)
     
-    class Meta:
-        model = ActivityAddress
-        fields = [
-            'place_name', 'address', 'city', 'postcode', 'country',
-            'coordinates', 'latitude', 'longitude'
-        ]
-        read_only_fields = ['coordinates', 'latitude', 'longitude']
+#     class Meta:
+#         model = ActivityAddress
+#         fields = [
+#             'place_name', 'address', 'city', 'postcode', 'country',
+#             'coordinates', 'latitude', 'longitude'
+#         ]
+#         read_only_fields = ['coordinates', 'latitude', 'longitude']
 
 
-class ActivityAddressWriteSerializer(serializers.ModelSerializer):
-    """Address serializer for create/update with coordinate input"""
-    longitude = serializers.FloatField(write_only=True, required=False, allow_null=True)
-    latitude = serializers.FloatField(write_only=True, required=False, allow_null=True)
+# class ActivityAddressWriteSerializer(serializers.ModelSerializer):
+#     """Address serializer for create/update with coordinate input"""
+#     longitude = serializers.FloatField(write_only=True, required=False, allow_null=True)
+#     latitude = serializers.FloatField(write_only=True, required=False, allow_null=True)
     
-    class Meta:
-        model = ActivityAddress
-        fields = [
-            'place_name', 'address', 'city', 'postcode', 'country',
-            'longitude', 'latitude'
-        ]
+#     class Meta:
+#         model = ActivityAddress
+#         fields = [
+#             'place_name', 'address', 'city', 'postcode', 'country',
+#             'longitude', 'latitude'
+#         ]
     
-    def validate(self, attrs):
-        """Validate that we have either address or coordinates"""
-        longitude = attrs.get('longitude')
-        latitude = attrs.get('latitude')
-        address = attrs.get('address')
+#     def validate(self, attrs):
+#         """Validate that we have either address or coordinates"""
+#         longitude = attrs.get('longitude')
+#         latitude = attrs.get('latitude')
+#         address = attrs.get('address')
         
-        if not address and not (longitude and latitude):
-            raise serializers.ValidationError(
-                "Provide either address or both longitude and latitude."
-            )
+#         if not address and not (longitude and latitude):
+#             raise serializers.ValidationError(
+#                 "Provide either address or both longitude and latitude."
+#             )
         
-        # Validate coordinate ranges
-        if longitude is not None and not (-180 <= longitude <= 180):
-            raise serializers.ValidationError({
-                'longitude': 'Must be between -180 and 180'
-            })
+#         # Validate coordinate ranges
+#         if longitude is not None and not (-180 <= longitude <= 180):
+#             raise serializers.ValidationError({
+#                 'longitude': 'Must be between -180 and 180'
+#             })
         
-        if latitude is not None and not (-90 <= latitude <= 90):
-            raise serializers.ValidationError({
-                'latitude': 'Must be between -90 and 90'
-            })
+#         if latitude is not None and not (-90 <= latitude <= 90):
+#             raise serializers.ValidationError({
+#                 'latitude': 'Must be between -90 and 90'
+#             })
         
-        return attrs
+#         return attrs
     
-    def _apply_coordinates(self, instance, longitude, latitude):
-        """Helper method to set coordinates on instance"""
-        if longitude is not None and latitude is not None:
-            instance.set_coordinates(longitude, latitude)
+#     def _apply_coordinates(self, instance, longitude, latitude):
+#         """Helper method to set coordinates on instance"""
+#         if longitude is not None and latitude is not None:
+#             instance.set_coordinates(longitude, latitude)
     
-    def create(self, validated_data):
-        """Create address with coordinates"""
-        longitude = validated_data.pop('longitude', None)
-        latitude = validated_data.pop('latitude', None)
+#     def create(self, validated_data):
+#         """Create address with coordinates"""
+#         longitude = validated_data.pop('longitude', None)
+#         latitude = validated_data.pop('latitude', None)
         
-        address = ActivityAddress(**validated_data)
-        self._apply_coordinates(address, longitude, latitude)
-        address.save()
-        return address
+#         address = ActivityAddress(**validated_data)
+#         self._apply_coordinates(address, longitude, latitude)
+#         address.save()
+#         return address
     
-    def update(self, instance, validated_data):
-        """Update address with coordinates"""
-        longitude = validated_data.pop('longitude', None)
-        latitude = validated_data.pop('latitude', None)
+#     def update(self, instance, validated_data):
+#         """Update address with coordinates"""
+#         longitude = validated_data.pop('longitude', None)
+#         latitude = validated_data.pop('latitude', None)
         
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
+#         for attr, value in validated_data.items():
+#             setattr(instance, attr, value)
         
-        self._apply_coordinates(instance, longitude, latitude)
-        instance.save()
-        return instance
+#         self._apply_coordinates(instance, longitude, latitude)
+#         instance.save()
+#         return instance
 
 
 # ============================================================================
@@ -232,7 +233,7 @@ class ActivityDetailSerializer(serializers.ModelSerializer):
     organizer = OrganizerPublicSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     author = UserSerializer(read_only=True)
-    address = ActivityAddressSerializer(read_only=True)
+    # address = ActivityAddressSerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     is_free = serializers.BooleanField(read_only=True)
     is_upcoming = serializers.BooleanField(read_only=True)
@@ -274,7 +275,7 @@ class ActivityCreateSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True
     )
-    address = ActivityAddressWriteSerializer(required=False)
+    # address = ActivityAddressWriteSerializer(required=False)
     
     class Meta:
         model = Activity

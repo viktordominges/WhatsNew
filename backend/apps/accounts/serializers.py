@@ -1,6 +1,6 @@
 #C:\Users\admin\Desktop\WhatsNew\apps\accounts\serializers.py
 
-from backend.apps.validators import validate_image_file
+from apps.validators import validate_image_file
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password

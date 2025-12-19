@@ -3,7 +3,8 @@
 // ============================================================================
 
 import { defineStore } from 'pinia';
-import { activitiesAPI, organizersAPI } from '@/services/api';
+import { activitiesAPI } from '@/api/activities';
+import { organizersAPI } from '@/api/organizers';
 
 export const useDashboardStore = defineStore('dashboard', {
     state: () => ({

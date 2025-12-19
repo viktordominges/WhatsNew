@@ -1,7 +1,7 @@
 // frontend/src/composables/useActivities.js
 
 import { ref, computed } from 'vue';
-import { activitiesAPI } from '@/services/api';
+import { activitiesAPI } from '@/services/http';
 
 /**
  * Composable для работы с активностями
@@ -158,7 +158,7 @@ export function useActivities() {
 // frontend/src/composables/useComments.js
 
 import { ref } from 'vue';
-import { activitiesAPI, commentsAPI } from '@/services/api';
+import { activitiesAPI, commentsAPI } from '@/services/http';
 
 /**
  * Composable для работы с комментариями
@@ -268,7 +268,7 @@ export function useComments(activitySlug) {
 // frontend/src/composables/useCategories.js
 
 import { ref } from 'vue';
-import { categoriesAPI } from '@/services/api';
+import { categoriesAPI } from '@/services/http';
 
 /**
  * Composable для работы с категориями
@@ -352,7 +352,7 @@ export function useCategories() {
 // frontend/src/composables/useAuth.js
 
 import { ref, computed } from 'vue';
-import { authAPI, saveTokens, clearTokens, isAuthenticated } from '@/services/api';
+import { authAPI, saveTokens, clearTokens, isAuthenticated } from '@/services/http';
 
 /**
  * Composable для работы с аутентификацией
@@ -496,7 +496,7 @@ export function useAuth() {
 // frontend/src/composables/useSearch.js
 
 import { ref, watch } from 'vue';
-import { activitiesAPI } from '@/services/api';
+import { activitiesAPI } from '@/services/http';
 
 /**
  * Composable для поиска и фильтрации активностей

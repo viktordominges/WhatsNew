@@ -1,77 +1,39 @@
+// src/stores/authStore.js
 import { defineStore } from 'pinia';
+import { registerUser, loginUser, logoutUser, getCurrentUser } from '../api/auth';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
-        token: localStorage.getItem('token') || null,
-        username: localStorage.getItem('username') || null,
-        email: localStorage.getItem('email') || null,
+        access: localStorage.getItem('access') || null,
+        refresh: localStorage.getItem('refresh') || null,
         loading: false,
         error: null
     }),
 
     getters: {
-        isLoggedIn: (state) => !!state.token,
+        isLoggedIn: (state) => !!state.access,
         currentUser: (state) => state.user
     },
 
     actions: {
-        async checkAuth() {
-            if (!this.token) {
-                return false;
-            }
-
-            try {
-                // TODO: Проверка токена на бэкенде
-                // const response = await fetch('/api/v1/auth/me', {
-                //     headers: { 'Authorization': `Bearer ${this.token}` }
-                // });
-                // if (response.ok) {
-                //     this.user = await response.json();
-                //     return true;
-                // }
-                
-                // Временная заглушка
-                return !!this.token;
-            } catch (error) {
-                this.logout();
-                return false;
-            }
-        },
-
         async login(credentials) {
             this.loading = true;
             this.error = null;
 
             try {
-                // TODO: Реальный API запрос
-                // const response = await fetch('/api/v1/auth/login', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(credentials)
-                // });
-                
-                // Временная заглушка
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                const mockToken = 'mock-token-' + Date.now();
-                const mockUser = {
-                    username: credentials.email.split('@')[0],
-                    email: credentials.email
-                };
+                const response = await loginUser(credentials);
 
-                this.token = mockToken;
-                this.user = mockUser;
-                this.username = mockUser.username;
-                this.email = mockUser.email;
+                this.access = response.access;
+                this.refresh = response.refresh;
+                this.user = response.user;
 
-                localStorage.setItem('token', mockToken);
-                localStorage.setItem('username', mockUser.username);
-                localStorage.setItem('email', mockUser.email);
+                localStorage.setItem('access', response.access);
+                localStorage.setItem('refresh', response.refresh);
 
-                return mockUser;
+                return response.user;
             } catch (error) {
-                this.error = error.message;
+                this.error = error.detail || 'Login failed';
                 throw error;
             } finally {
                 this.loading = false;
@@ -83,31 +45,55 @@ export const useAuthStore = defineStore('auth', {
             this.error = null;
 
             try {
-                // TODO: Реальный API запрос
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // После успешной регистрации можно сразу логинить
-                return await this.login({
-                    email: userData.email,
-                    password: userData.password
-                });
+                const response = await registerUser(userData);
+
+                this.access = response.access;
+                this.refresh = response.refresh;
+                this.user = response.user;
+
+                localStorage.setItem('access', response.access);
+                localStorage.setItem('refresh', response.refresh);
+
+                return response.user;
             } catch (error) {
-                this.error = error.message;
+                this.error = error.detail || 'Registration failed';
                 throw error;
             } finally {
                 this.loading = false;
             }
         },
 
-        logout() {
-            this.user = null;
-            this.token = null;
-            this.username = null;
-            this.email = null;
-            
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            localStorage.removeItem('email');
+        async logout() {
+            try {
+                if (this.refresh) {
+                    await logoutUser();
+                }
+            } catch (e) {
+                console.warn('Logout failed', e);
+            } finally {
+                this.user = null;
+                this.access = null;
+                this.refresh = null;
+
+                localStorage.removeItem('access');
+                localStorage.removeItem('refresh');
+            }
+        },
+
+        async checkAuth() {
+            if (!this.access) return false
+
+            this.loading = true
+            try {
+                this.user = await getCurrentUser()
+                return true
+            } catch (e) {
+                await this.logout()
+                return false
+            } finally {
+                this.loading = false
+            }
         }
+
     }
 });

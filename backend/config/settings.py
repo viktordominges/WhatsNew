@@ -89,9 +89,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
@@ -148,6 +148,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Укажите порт, на котором работает ваш Vue.js
     "http://127.0.0.1:5173",
 ]
+
+# Разрешить отправку куки
+CORS_ALLOW_CREDENTIALS = True
 
 # JWT Configuration
 from datetime import timedelta

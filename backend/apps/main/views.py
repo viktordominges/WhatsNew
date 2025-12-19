@@ -21,8 +21,8 @@ from .serializers import (
     ActivityUpdateSerializer,
     CommentSerializer,
     CommentCreateSerializer,
-    ActivityAddressSerializer,
-    ActivityAddressWriteSerializer,
+    # ActivityAddressSerializer,
+    # ActivityAddressWriteSerializer,
 )
 from .permissions import IsAuthorOrReadOnly, IsAdminOrReadOnly
 
@@ -216,73 +216,73 @@ class ActivityViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
     
-    @action(detail=True, methods=['get'])
-    def address(self, request, slug=None):
-        """Get activity address"""
-        activity = self.get_object()
+    # @action(detail=True, methods=['get'])
+    # def address(self, request, slug=None):
+    #     """Get activity address"""
+    #     activity = self.get_object()
         
-        if not hasattr(activity, 'address'):
-            return Response(
-                {'detail': 'No address found for this activity.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+    #     if not hasattr(activity, 'address'):
+    #         return Response(
+    #             {'detail': 'No address found for this activity.'},
+    #             status=status.HTTP_404_NOT_FOUND
+    #         )
         
-        serializer = ActivityAddressSerializer(activity.address)
-        return Response(serializer.data)
+    #     serializer = ActivityAddressSerializer(activity.address)
+    #     return Response(serializer.data)
     
-    @action(
-        detail=True,
-        methods=['post', 'patch'],
-        permission_classes=[IsAuthenticated, IsAuthorOrReadOnly]
-    )
-    def address_update(self, request, slug=None):
-        """Create or update activity address"""
-        activity = self.get_object()
+    # @action(
+    #     detail=True,
+    #     methods=['post', 'patch'],
+    #     permission_classes=[IsAuthenticated, IsAuthorOrReadOnly]
+    # )
+    # def address_update(self, request, slug=None):
+    #     """Create or update activity address"""
+    #     activity = self.get_object()
 
-        # Check if address exists
-        if hasattr(activity, 'address'):
-            # Update existing address
-            serializer = ActivityAddressWriteSerializer(
-                activity.address,
-                data=request.data,
-                partial=True
-            )
-        else:
-            # Create new address
-            serializer = ActivityAddressWriteSerializer(data=request.data)
+    #     # Check if address exists
+    #     if hasattr(activity, 'address'):
+    #         # Update existing address
+    #         serializer = ActivityAddressWriteSerializer(
+    #             activity.address,
+    #             data=request.data,
+    #             partial=True
+    #         )
+    #     else:
+    #         # Create new address
+    #         serializer = ActivityAddressWriteSerializer(data=request.data)
         
-        serializer.is_valid(raise_exception=True)
+    #     serializer.is_valid(raise_exception=True)
         
-        if hasattr(activity, 'address'):
-            serializer.save()
-        else:
-            serializer.save(activity=activity)
+    #     if hasattr(activity, 'address'):
+    #         serializer.save()
+    #     else:
+    #         serializer.save(activity=activity)
         
-        return Response(
-            ActivityAddressSerializer(activity.address).data,
-            status=status.HTTP_200_OK
-        )
+    #     return Response(
+    #         ActivityAddressSerializer(activity.address).data,
+    #         status=status.HTTP_200_OK
+    #     )
     
-    @action(
-        detail=True,
-        methods=['delete'],
-        permission_classes=[IsAuthenticated, IsAuthorOrReadOnly]
-    )
-    def address_delete(self, request, slug=None):
-        """Delete activity address"""
-        activity = self.get_object()
+    # @action(
+    #     detail=True,
+    #     methods=['delete'],
+    #     permission_classes=[IsAuthenticated, IsAuthorOrReadOnly]
+    # )
+    # def address_delete(self, request, slug=None):
+    #     """Delete activity address"""
+    #     activity = self.get_object()
         
-        # Check permissions
-        self.check_object_permissions(request, activity)
+    #     # Check permissions
+    #     self.check_object_permissions(request, activity)
         
-        if not hasattr(activity, 'address'):
-            return Response(
-                {'detail': 'No address found for this activity.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+    #     if not hasattr(activity, 'address'):
+    #         return Response(
+    #             {'detail': 'No address found for this activity.'},
+    #             status=status.HTTP_404_NOT_FOUND
+    #         )
         
-        activity.address.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    #     activity.address.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
     
     @action(detail=True, methods=['get'])
     def comments(self, request, slug=None):

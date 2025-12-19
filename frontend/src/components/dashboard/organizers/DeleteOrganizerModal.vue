@@ -3,7 +3,7 @@
      ============================================================================ -->
 <script setup>
 import { ref } from 'vue';
-import { organizersAPI } from '@/services/api';
+import { organizersAPI } from '@/services/http';
 
 const props = defineProps({
     organizer: {

@@ -1,13 +1,18 @@
 <script setup>
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
-import { useCategoryStore } from '@/stores/categoriesStore.js'
+import { useCategoriesStore } from '@/stores/categoriesStore.js'
 
-const store = useCategoryStore()
+const categoriesStore = useCategoriesStore()
 
-onMounted(() => {
-    store.load()
+onMounted(async () => {
+    try {
+        await categoriesStore.fetchCategories()
+    } catch (e) {
+        console.error('Failed to load categories', e)
+    }
 })
+
 </script>
 
 <template>

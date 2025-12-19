@@ -101,6 +101,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'  // <-- импорт Pinia store
 
 const router = useRouter()
 
@@ -110,89 +111,91 @@ const showPassword = ref(false)
 const isSubmitting = ref(false)
 
 const errors = ref({
-  email: '',
-  password: ''
+    email: '',
+    password: ''
 })
 
 const formError = ref('')
 
 // Notification system
 const notification = ref({
-  show: false,
-  type: 'success',
-  message: ''
+    show: false,
+    type: 'success',
+    message: ''
 })
 
 function showNotification(type, message) {
-  notification.value = {
-    show: true,
-    type,
-    message
-  }
-  
-  setTimeout(() => {
-    notification.value.show = false
-  }, 3000)
+    notification.value = {
+        show: true,
+        type,
+        message
+    }
+    
+    setTimeout(() => {
+        notification.value.show = false
+    }, 3000)
 }
 
 function validateEmail() {
-  const value = email.value.trim()
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const value = email.value.trim()
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-  if (!value) {
-    errors.value.email = "L'email est obligatoire."
-  } else if (!regex.test(value)) {
-    errors.value.email = "L'adresse e-mail n'est pas valide."
-  } else {
-    errors.value.email = ''
-  }
+    if (!value) {
+        errors.value.email = "L'email est obligatoire."
+    } else if (!regex.test(value)) {
+        errors.value.email = "L'adresse e-mail n'est pas valide."
+    } else {
+        errors.value.email = ''
+    }
 }
 
 function validatePassword() {
-  const value = password.value
+    const value = password.value
 
-  if (!value) {
-    errors.value.password = "Le mot de passe est obligatoire."
-  } else if (value.length < 6) {
-    errors.value.password = "Le mot de passe doit contenir au moins 6 caractères."
-  } else {
-    errors.value.password = ''
-  }
+    if (!value) {
+        errors.value.password = "Le mot de passe est obligatoire."
+    } else if (value.length < 6) {
+        errors.value.password = "Le mot de passe doit contenir au moins 6 caractères."
+    } else {
+        errors.value.password = ''
+    }
 }
 
 async function handleSubmit() {
-  validateEmail()
-  validatePassword()
+    validateEmail()
+    validatePassword()
 
-  if (errors.value.email || errors.value.password) {
-    formError.value = "Veuillez corriger les erreurs avant de continuer."
-    showNotification('error', 'Formulaire invalide')
-    return
-  }
+    if (errors.value.email || errors.value.password) {
+        formError.value = "Veuillez corriger les erreurs avant de continuer."
+        showNotification('error', 'Formulaire invalide')
+        return
+    }
 
-  formError.value = ''
-  isSubmitting.value = true
+    formError.value = ''
+    isSubmitting.value = true
 
-  try {
-    // API call here
-    // const response = await loginAPI({ email: email.value, password: password.value })
-    
-    await new Promise(resolve => setTimeout(resolve, 600))
+    try {
+        // Вызов Pinia store для логина
+        await useAuthStore().login({
+        email: email.value,
+        password: password.value
+        })
 
-    showNotification('success', 'Connexion réussie!')
-    
-    setTimeout(() => {
-      router.push('/profile')
-    }, 1000)
+        showNotification('success', 'Connexion réussie!')
 
-  } catch (e) {
-    console.error('Login error:', e)
-    showNotification('error', 'Une erreur est survenue.')
-    formError.value = "Impossible de se connecter. Vérifiez vos identifiants."
-  } finally {
-    isSubmitting.value = false
-  }
+        setTimeout(() => {
+        router.push('/dashboard')  // редирект после успешного логина
+        }, 1000)
+
+    } catch (e) {
+        console.error('Login error:', e)
+        showNotification('error', e.detail || 'Une erreur est survenue.')
+        formError.value = "Impossible de se connecter. Vérifiez vos identifiants."
+    } finally {
+        isSubmitting.value = false
+    }
 }
+
 </script>
 
 

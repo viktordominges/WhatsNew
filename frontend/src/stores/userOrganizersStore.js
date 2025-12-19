@@ -3,7 +3,7 @@
 // ============================================================================
 
 import { defineStore } from 'pinia';
-import { organizersAPI } from '@/services/api';
+import { organizersAPI } from '@/services/http';
 
 export const useUserOrganizersStore = defineStore('userOrganizers', {
     state: () => ({

@@ -1,58 +1,67 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useCategoryStore } from '@/stores/categoriesStore.js'
+import { ref, onMounted } from 'vue'
+import { useCategoriesStore } from '@/stores/categoriesStore.js'
 
 /**
- * props
+ * Props
  */
 const props = defineProps({
-    variant: {
-        type: String,
-        default: 'menu', // menu | footer | grid
-    }
+    variant: { type: String, default: 'menu' } // menu | footer | grid
 })
 
 /**
- * store
+ * Store
  */
-const store = useCategoryStore()
-const categories = computed(() => store.items)
+const store = useCategoriesStore()
+
+// Локальный реактивный массив категорий
+const categories = ref([])
 
 /**
- * active state (локально)
- * при необходимости можно вынести в store или v-model
+ * Активная категория (локально)
  */
 const activeCategory = ref(null)
-
 function selectCategory(slug) {
     activeCategory.value = slug
 }
 
-// console.log(category.image);
-
+/**
+ * Загрузка категорий при монтировании
+ */
+onMounted(async () => {
+    try {
+        const data = await store.fetchCategories()
+        categories.value = Array.isArray(data) ? data : []
+    } catch (e) {
+        console.error('Failed to load categories', e)
+        categories.value = []
+    }
+})
 </script>
 
 <template>
+    <!-- Рендерим список только если есть хотя бы одна категория -->
     <ul
-        class="categories-list"
-        :class="`categories-list--${variant}`"
+    v-if="categories.length"
+    class="categories-list"
+    :class="`categories-list--${variant}`"
     >
         <li
-            v-for="category in categories"
-            :key="category.slug"
-            @click="selectCategory(category.slug)"
-            :class="{ active: activeCategory === category.slug }"
+        v-for="category in categories"
+        :key="category.id"
+        @click="selectCategory(category.slug)"
+        :class="{ active: activeCategory === category.slug }"
         >
             <img
                 v-if="variant === 'menu'"
                 :src="category.image"
                 :alt="category.name"
             />
-
             <a>{{ category.name }}</a>
         </li>
     </ul>
 </template>
+
 
 
 <style scoped>

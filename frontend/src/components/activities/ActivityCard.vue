@@ -1,8 +1,11 @@
 <script setup>
+
+import { ref, onMounted, nextTick } from 'vue';
+import defaultPoster from '@/assets/images/default-card-poster.jpg';
+
 const icons = import.meta.glob('@/assets/icons/card-icons/*.svg', { eager: true, import: 'default' });
 const getIcon = name => icons[`/src/assets/icons/card-icons/${name}.svg`];
-import defaultPoster from '@/assets/images/default-card-poster.jpg';
-import { ref, onMounted, nextTick } from 'vue';
+
 
 const hoverBlockRef = ref(null);
 const hoverHeight = ref(0);
